@@ -12,7 +12,9 @@ import {
   UpdateMergeLockMsg,
   MergeMsg,
   PermissionMergeMsg,
-  UpdateOperatorsMsg
+  UpdateOperatorsMsg,
+  ExecuteMsg,
+  QueryMsg
 } from '../../types/modules/merge'
 
 const CODE_ID = 1
@@ -31,29 +33,32 @@ export class MergeModule extends ContractWrapper {
   }
 
   async updateMergeLock({ lock }: UpdateMergeLockMsg): Promise<ExecuteResult> {
-    return super.execute({ lock }, 'auto')
+    return super.execute({ [`${ExecuteMsg.UPDATE_MERGE_LOCK}`]: { lock } }, 'auto')
   }
 
   async merge({ msg }: MergeMsg): Promise<ExecuteResult> {
-    return super.execute({ msg }, 'auto')
+    return super.execute({ [`${ExecuteMsg.MERGE}`]: { msg } }, 'auto')
   }
 
   async permissionMerge({
     permission_merge,
     merge_msg
   }: PermissionMergeMsg): Promise<ExecuteResult> {
-    return super.execute({ permission_merge, merge_msg }, 'auto')
+    return super.execute(
+      { [`${ExecuteMsg.PERMISSION_MERGE}`]: { permission_merge, merge_msg } },
+      'auto'
+    )
   }
 
   async updateOperators(msg: UpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { msg } }, 'auto')
   }
 
   async getConfig(): Promise<any> {
-    return super.query({ config: {} })
+    return super.query({ [`${QueryMsg.CONFIG}`]: {} })
   }
 
   async getOperators(): Promise<any> {
-    return super.query({ operators: {} })
+    return super.query({ [`${QueryMsg.OPERATORS}`]: {} })
   }
 }
