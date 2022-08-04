@@ -3,8 +3,7 @@ import {
   InstantiateOptions,
   InstantiateResult,
   OfflineSigner,
-  SigningCosmWasmClient,
-  StdFee
+  SigningCosmWasmClient
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
@@ -24,16 +23,12 @@ import { Collections } from '../../types/shared'
 const CODE_ID = 1
 
 export class MintModule extends ContractWrapper {
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress: string) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
-  async init(
-    { admin }: InstantiateMsg,
-    fee: number | StdFee | 'auto',
-    options?: InstantiateOptions
-  ): Promise<InstantiateResult> {
-    return super.instantiate(CODE_ID, { admin }, 'Rift Framework Mint Module', fee, options)
+  async init({ admin }: InstantiateMsg, options?: InstantiateOptions): Promise<InstantiateResult> {
+    return super.instantiate(CODE_ID, { admin }, 'Komple Framework Mint Module', 'auto', options)
   }
 
   async createCollection({

@@ -3,8 +3,7 @@ import {
   InstantiateOptions,
   InstantiateResult,
   OfflineSigner,
-  SigningCosmWasmClient,
-  StdFee
+  SigningCosmWasmClient
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import { MODULES } from '../../types'
@@ -19,20 +18,19 @@ import {
 const CODE_ID = 1
 
 export class ControllerContract extends ContractWrapper {
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress: string) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
   async init(
     { name, description, image, external_link }: InstantiateMsg,
-    fee: number | StdFee | 'auto',
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
       CODE_ID,
       { name, description, image, external_link },
-      'Rift Framework Controller Contract',
-      fee,
+      'Komple Framework Controller Contract',
+      'auto',
       options
     )
   }

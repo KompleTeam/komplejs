@@ -3,8 +3,7 @@ import {
   InstantiateOptions,
   InstantiateResult,
   OfflineSigner,
-  SigningCosmWasmClient,
-  StdFee
+  SigningCosmWasmClient
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
@@ -37,7 +36,7 @@ import {
 const CODE_ID = 1
 
 export class TokenContract extends ContractWrapper {
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress: string) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -52,7 +51,6 @@ export class TokenContract extends ContractWrapper {
       unit_price,
       native_denom
     }: InstantiateMsg,
-    fee: number | StdFee | 'auto',
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
@@ -67,8 +65,8 @@ export class TokenContract extends ContractWrapper {
         unit_price,
         native_denom
       },
-      'Rift Framework Token Contract',
-      fee,
+      'Komple Framework Token Contract',
+      'auto',
       options
     )
   }

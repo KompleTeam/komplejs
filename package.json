@@ -1,10 +1,10 @@
 {
-  "name": "rift-js",
-  "version": "0.0.1",
+  "name": "komple-js",
+  "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/rift-js.umd.js",
-  "module": "dist/rift-js.es5.js",
+  "main": "dist/komple-js.umd.js",
+  "module": "dist/komple-js.es5.js",
   "typings": "dist/types/index.d.ts",
   "files": [
     "dist"

@@ -1,7 +1,10 @@
-import { RiftClient } from '../src'
+import { KompleClient } from '../src'
 
-describe('Rift Client', () => {
-  it('RiftClient is instantiable', () => {
-    expect(new RiftClient()).toBeInstanceOf(RiftClient)
+describe('Komple Client', () => {
+  it('KompleClient is instantiable', () => {
+    expect(new KompleClient()).toBeInstanceOf(KompleClient)
+
+    const kompleClient = new KompleClient()
+    const controller = kompleClient.getControllerContract()
   })
 })

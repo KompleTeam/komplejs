@@ -9,22 +9,26 @@ import {
 } from 'cosmwasm'
 
 export class ContractWrapper {
-  client: SigningCosmWasmClient
-  signer: OfflineSigner
-  address: string
+  protected client: SigningCosmWasmClient
+  protected signer: OfflineSigner
+  protected address?: string
 
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, address: string) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, address?: string) {
     this.client = client
     this.signer = signer
     this.address = address
   }
 
-  async getAccount() {
+  private async getAccount() {
     const account = await this.signer.getAccounts()
     return account[0]
   }
 
-  async instantiate(
+  updateContractAddress(address: string) {
+    this.address = address
+  }
+
+  protected async instantiate(
     codeId: number,
     msg: any,
     label: string,
@@ -41,12 +45,13 @@ export class ContractWrapper {
     )
   }
 
-  async execute(
+  protected async execute(
     msg: any,
     fee: number | StdFee | 'auto',
     memo?: string,
     funds?: Coin[]
   ): Promise<ExecuteResult> {
+    if (!this.address) throw new Error('Contract address is missing!')
     return this.client.execute(
       (await this.getAccount()).address,
       this.address,
@@ -57,7 +62,8 @@ export class ContractWrapper {
     )
   }
 
-  async query(msg: any): Promise<any> {
+  protected async query(msg: any): Promise<any> {
+    if (!this.address) throw new Error('Contract address is missing!')
     return this.client.queryContractSmart(this.address, msg)
   }
 }

@@ -3,8 +3,7 @@ import {
   InstantiateOptions,
   InstantiateResult,
   OfflineSigner,
-  SigningCosmWasmClient,
-  StdFee
+  SigningCosmWasmClient
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
@@ -22,20 +21,19 @@ import {
 const CODE_ID = 1
 
 export class WhitelistContract extends ContractWrapper {
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress: string) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
   async init(
     { members, start_time, end_time, unit_price, per_address_limit, member_limit }: InstantiateMsg,
-    fee: number | StdFee | 'auto',
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
       CODE_ID,
       { members, start_time, end_time, unit_price, per_address_limit, member_limit },
-      'Rift Framework Whitelist Contract',
-      fee,
+      'Komple Framework Whitelist Contract',
+      'auto',
       options
     )
   }
