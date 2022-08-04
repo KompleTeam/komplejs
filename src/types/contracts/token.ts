@@ -2,12 +2,92 @@ import { Coin } from 'cosmwasm'
 import { CollectionInfo, Expiration, Locks, Metadata, Royalty, TokenInfo } from '../shared'
 
 export type ExecuteMsg =
-  | 'init_mint_module'
-  | 'init_permission_module'
-  | 'init_merge_module'
-  | 'init_marketplace_module'
+  | 'transfer_nft'
+  | 'send_nft'
+  | 'approve'
+  | 'revoke'
+  | 'approve_all'
+  | 'revoke_all'
+  | 'mint'
+  | 'burn'
+  | 'update_operators'
+  | 'admin_transfer_nft'
+  | 'update_locks'
+  | 'update_token_locks'
+  | 'update_operation_lock'
+  | 'update_per_address_limit'
+  | 'update_start_time'
+  | 'update_whitelist'
+  | 'update_royalty'
+  | 'update_metadata'
+  | 'init_metadata_contract'
+  | 'init_royalty_contract'
+  | 'init_whitelist_contract'
 
-export type QueryMsg = 'config' | 'controller_info' | 'module_address'
+export const ExecuteMsg = {
+  TRANSFER_NFT: 'transfer_nft',
+  SEND_NFT: 'send_nft',
+  APPROVE: 'approve',
+  REVOKE: 'revoke',
+  APPROVE_ALL: 'approve_all',
+  REVOKE_ALL: 'revoke_all',
+  MINT: 'mint',
+  BURN: 'burn',
+  UPDATE_OPERATORS: 'update_operators',
+  ADMIN_TRANSFER_NFT: 'admin_transfer_nft',
+  UPDATE_LOCKS: 'update_locks',
+  UPDATE_TOKEN_LOCKS: 'update_token_locks',
+  UPDATE_OPERATION_LOCK: 'update_operation_lock',
+  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit',
+  UPDATE_START_TIME: 'update_start_time',
+  UPDATE_WHITELIST: 'update_whitelist',
+  UPDATE_ROYALTY: 'update_royalty',
+  UPDATE_METADATA: 'update_metadata',
+  INIT_METADATA_CONTRACT: 'init_metadata_contract',
+  INIT_ROYALTY_CONTRACT: 'init_royalty_contract',
+  INIT_WHITELIST_CONTRACT: 'init_whitelist_contract'
+}
+
+export type QueryMsg =
+  | 'owner_of'
+  | 'approval'
+  | 'approvals'
+  | 'all_operators'
+  | 'num_tokens'
+  | 'contract_info'
+  | 'nft_info'
+  | 'all_nft_info'
+  | 'tokens'
+  | 'all_tokens'
+  | 'minter'
+  | 'locks'
+  | 'token_locks'
+  | 'minted_tokens_per_address'
+  | 'collection_info'
+  | 'contracts'
+  | 'config'
+  | 'contract_operators'
+
+export const QueryMsg = {
+  OWNER_OF: 'owner_of',
+  APPROVAL: 'approval',
+  APPROVALS: 'approvals',
+  ALL_OPERATORS: 'all_operators',
+  NUM_TOKENS: 'num_tokens',
+  CONTRACT_INFO: 'contract_info',
+  NFT_INFO: 'nft_info',
+  ALL_NFT_INFO: 'all_nft_info',
+  TOKENS: 'tokens',
+  ALL_TOKENS: 'all_tokens',
+  MINTER: 'minter',
+  LOCKS: 'locks',
+  TOKEN_LOCKS: 'token_locks',
+  MINTED_TOKENS_PER_ADDRESS: 'minted_tokens_per_address',
+  COLLECTION_INFO: 'collection_info',
+  CONTRACTS: 'contracts',
+  CONFIG: 'config',
+  CONTRACT_OPERATORS: 'contract_operators'
+}
 
 export interface InstantiateMsg {
   admin: string
