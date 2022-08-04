@@ -1,4 +1,3 @@
-import 'jest'
 import { RiftClient } from '../src'
 
 describe('Rift Client', () => {

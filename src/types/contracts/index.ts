@@ -9,9 +9,9 @@ export {
 export type CONTRACTS = 'controller' | 'token' | 'metadata' | 'whitelist' | 'royalty'
 
 export const CONTRACTS = {
-  CONTROLLER: 'controller',
-  TOKEN: 'token',
-  METADATA: 'metadata',
-  WHITELIST: 'whitelist',
-  ROYALTY: 'royalty'
+  CONTROLLER: 'controller' as CONTRACTS,
+  TOKEN: 'token' as CONTRACTS,
+  METADATA: 'metadata' as CONTRACTS,
+  WHITELIST: 'whitelist' as CONTRACTS,
+  ROYALTY: 'royalty' as CONTRACTS
 }

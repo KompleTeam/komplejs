@@ -1,11 +1,11 @@
 {
   "name": "rift-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/rift-js.umd.js",
   "module": "dist/rift-js.es5.js",
-  "typings": "dist/types/rift-js.d.ts",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
@@ -21,7 +21,8 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",

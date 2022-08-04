@@ -11,13 +11,13 @@ export type ExecuteMsg =
   | 'update_linked_collections'
 
 export const ExecuteMsg = {
-  CREATE_COLLECTION: 'create_collection',
-  UPDATE_MINT_LOCK: 'update_mint_lock',
-  MINT: 'mint',
-  MINT_TO: 'mint_to',
-  PERMISSION_MINT: 'permission_mint',
-  UPDATE_OPERATORS: 'update_operators',
-  UPDATE_LINKED_COLLECTIONS: 'update_linked_collections'
+  CREATE_COLLECTION: 'create_collection' as ExecuteMsg,
+  UPDATE_MINT_LOCK: 'update_mint_lock' as ExecuteMsg,
+  MINT: 'mint' as ExecuteMsg,
+  MINT_TO: 'mint_to' as ExecuteMsg,
+  PERMISSION_MINT: 'permission_mint' as ExecuteMsg,
+  UPDATE_OPERATORS: 'update_operators' as ExecuteMsg,
+  UPDATE_LINKED_COLLECTIONS: 'update_linked_collections' as ExecuteMsg
 }
 
 export type QueryMsg =
@@ -28,11 +28,11 @@ export type QueryMsg =
   | 'linked_collections'
 
 export const QueryMsg = {
-  CONFIG: 'config',
-  COLLECTION_ADDRESS: 'collection_address',
-  OPERATORS: 'operators',
-  COLLECTION_TYPES: 'collection_types',
-  LINKED_COLLECTIONS: 'linked_collections'
+  CONFIG: 'config' as QueryMsg,
+  COLLECTION_ADDRESS: 'collection_address' as QueryMsg,
+  OPERATORS: 'operators' as QueryMsg,
+  COLLECTION_TYPES: 'collection_types' as QueryMsg,
+  LINKED_COLLECTIONS: 'linked_collections' as QueryMsg
 }
 
 export interface InstantiateMsg {

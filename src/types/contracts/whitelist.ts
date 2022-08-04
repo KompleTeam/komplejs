@@ -9,23 +9,23 @@ export type ExecuteMsg =
   | 'update_member_limit'
 
 export const ExecuteMsg = {
-  UPDATE_START_TIME: 'update_start_time',
-  UPDATE_END_TIME: 'update_end_time',
-  ADD_MEMBERS: 'add_members',
-  REMOVE_MEMBERS: 'remove_members',
-  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit',
-  UPDATE_MEMBER_LIMIT: 'update_member_limit'
+  UPDATE_START_TIME: 'update_start_time' as ExecuteMsg,
+  UPDATE_END_TIME: 'update_end_time' as ExecuteMsg,
+  ADD_MEMBERS: 'add_members' as ExecuteMsg,
+  REMOVE_MEMBERS: 'remove_members' as ExecuteMsg,
+  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as ExecuteMsg,
+  UPDATE_MEMBER_LIMIT: 'update_member_limit' as ExecuteMsg
 }
 
 export type QueryMsg = 'config' | 'has_started' | 'has_end' | 'is_active' | 'members' | 'has_member'
 
 export const QueryMsg = {
-  CONFIG: 'config',
-  HAS_STARTED: 'has_started',
-  HAS_ENDED: 'has_end',
-  IS_ACTIVE: 'is_active',
-  MEMBERS: 'members',
-  HAS_MEMBER: 'has_member'
+  CONFIG: 'config' as QueryMsg,
+  HAS_STARTED: 'has_started' as QueryMsg,
+  HAS_ENDED: 'has_end' as QueryMsg,
+  IS_ACTIVE: 'is_active' as QueryMsg,
+  MEMBERS: 'members' as QueryMsg,
+  HAS_MEMBER: 'has_member' as QueryMsg
 }
 
 export interface InstantiateMsg {

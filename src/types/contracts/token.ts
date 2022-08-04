@@ -25,27 +25,27 @@ export type ExecuteMsg =
   | 'init_whitelist_contract'
 
 export const ExecuteMsg = {
-  TRANSFER_NFT: 'transfer_nft',
-  SEND_NFT: 'send_nft',
-  APPROVE: 'approve',
-  REVOKE: 'revoke',
-  APPROVE_ALL: 'approve_all',
-  REVOKE_ALL: 'revoke_all',
-  MINT: 'mint',
-  BURN: 'burn',
-  UPDATE_OPERATORS: 'update_operators',
-  ADMIN_TRANSFER_NFT: 'admin_transfer_nft',
-  UPDATE_LOCKS: 'update_locks',
-  UPDATE_TOKEN_LOCKS: 'update_token_locks',
-  UPDATE_OPERATION_LOCK: 'update_operation_lock',
-  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit',
-  UPDATE_START_TIME: 'update_start_time',
-  UPDATE_WHITELIST: 'update_whitelist',
-  UPDATE_ROYALTY: 'update_royalty',
-  UPDATE_METADATA: 'update_metadata',
-  INIT_METADATA_CONTRACT: 'init_metadata_contract',
-  INIT_ROYALTY_CONTRACT: 'init_royalty_contract',
-  INIT_WHITELIST_CONTRACT: 'init_whitelist_contract'
+  TRANSFER_NFT: 'transfer_nft' as ExecuteMsg,
+  SEND_NFT: 'send_nft' as ExecuteMsg,
+  APPROVE: 'approve' as ExecuteMsg,
+  REVOKE: 'revoke' as ExecuteMsg,
+  APPROVE_ALL: 'approve_all' as ExecuteMsg,
+  REVOKE_ALL: 'revoke_all' as ExecuteMsg,
+  MINT: 'mint' as ExecuteMsg,
+  BURN: 'burn' as ExecuteMsg,
+  UPDATE_OPERATORS: 'update_operators' as ExecuteMsg,
+  ADMIN_TRANSFER_NFT: 'admin_transfer_nft' as ExecuteMsg,
+  UPDATE_LOCKS: 'update_locks' as ExecuteMsg,
+  UPDATE_TOKEN_LOCKS: 'update_token_locks' as ExecuteMsg,
+  UPDATE_OPERATION_LOCK: 'update_operation_lock' as ExecuteMsg,
+  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as ExecuteMsg,
+  UPDATE_START_TIME: 'update_start_time' as ExecuteMsg,
+  UPDATE_WHITELIST: 'update_whitelist' as ExecuteMsg,
+  UPDATE_ROYALTY: 'update_royalty' as ExecuteMsg,
+  UPDATE_METADATA: 'update_metadata' as ExecuteMsg,
+  INIT_METADATA_CONTRACT: 'init_metadata_contract' as ExecuteMsg,
+  INIT_ROYALTY_CONTRACT: 'init_royalty_contract' as ExecuteMsg,
+  INIT_WHITELIST_CONTRACT: 'init_whitelist_contract' as ExecuteMsg
 }
 
 export type QueryMsg =
@@ -69,24 +69,24 @@ export type QueryMsg =
   | 'contract_operators'
 
 export const QueryMsg = {
-  OWNER_OF: 'owner_of',
-  APPROVAL: 'approval',
-  APPROVALS: 'approvals',
-  ALL_OPERATORS: 'all_operators',
-  NUM_TOKENS: 'num_tokens',
-  CONTRACT_INFO: 'contract_info',
-  NFT_INFO: 'nft_info',
-  ALL_NFT_INFO: 'all_nft_info',
-  TOKENS: 'tokens',
-  ALL_TOKENS: 'all_tokens',
-  MINTER: 'minter',
-  LOCKS: 'locks',
-  TOKEN_LOCKS: 'token_locks',
-  MINTED_TOKENS_PER_ADDRESS: 'minted_tokens_per_address',
-  COLLECTION_INFO: 'collection_info',
-  CONTRACTS: 'contracts',
-  CONFIG: 'config',
-  CONTRACT_OPERATORS: 'contract_operators'
+  OWNER_OF: 'owner_of' as QueryMsg,
+  APPROVAL: 'approval' as QueryMsg,
+  APPROVALS: 'approvals' as QueryMsg,
+  ALL_OPERATORS: 'all_operators' as QueryMsg,
+  NUM_TOKENS: 'num_tokens' as QueryMsg,
+  CONTRACT_INFO: 'contract_info' as QueryMsg,
+  NFT_INFO: 'nft_info' as QueryMsg,
+  ALL_NFT_INFO: 'all_nft_info' as QueryMsg,
+  TOKENS: 'tokens' as QueryMsg,
+  ALL_TOKENS: 'all_tokens' as QueryMsg,
+  MINTER: 'minter' as QueryMsg,
+  LOCKS: 'locks' as QueryMsg,
+  TOKEN_LOCKS: 'token_locks' as QueryMsg,
+  MINTED_TOKENS_PER_ADDRESS: 'minted_tokens_per_address' as QueryMsg,
+  COLLECTION_INFO: 'collection_info' as QueryMsg,
+  CONTRACTS: 'contracts' as QueryMsg,
+  CONFIG: 'config' as QueryMsg,
+  CONTRACT_OPERATORS: 'contract_operators' as QueryMsg
 }
 
 export interface InstantiateMsg {

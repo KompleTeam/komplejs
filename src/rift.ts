@@ -5,7 +5,20 @@ import { CONTRACTS, MODULES } from './types'
 import { ControllerContract, TokenContract } from './classes/contracts'
 import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './classes/modules'
 
-export class RiftClient {
+interface RiftClientInterface {
+  client: SigningCosmWasmClient | null
+  signer: OfflineSigner | null
+
+  setupSigningClient: (endpoint: string, signer: OfflineSigner) => Promise<void>
+  setupKeplrClient: (config: any) => Promise<void>
+  getContract: (contract: CONTRACTS, address: string) => ControllerContract | TokenContract
+  getModule: (
+    module: MODULES,
+    address: string
+  ) => MintModule | MergeModule | MarketplaceModule | PermissionModule
+}
+
+export class RiftClient implements RiftClientInterface {
   client: SigningCosmWasmClient | null
   signer: OfflineSigner | null
 

@@ -1,17 +1,17 @@
 export type ExecuteMsg = 'update_merge_lock' | 'merge' | 'permission_merge' | 'update_operators'
 
 export const ExecuteMsg = {
-  UPDATE_MERGE_LOCK: 'update_merge_lock',
-  MERGE: 'merge',
-  PERMISSION_MERGE: 'permission_merge',
-  UPDATE_OPERATORS: 'update_operators'
+  UPDATE_MERGE_LOCK: 'update_merge_lock' as ExecuteMsg,
+  MERGE: 'merge' as ExecuteMsg,
+  PERMISSION_MERGE: 'permission_merge' as ExecuteMsg,
+  UPDATE_OPERATORS: 'update_operators' as ExecuteMsg
 }
 
 export type QueryMsg = 'config' | 'operators'
 
 export const QueryMsg = {
-  CONFIG: 'config',
-  OPERATORS: 'operators'
+  CONFIG: 'config' as QueryMsg,
+  OPERATORS: 'operators' as QueryMsg
 }
 
 export interface InstantiateMsg {

@@ -1,17 +1,17 @@
 export type ExecuteMsg = 'list_fixed_token' | 'delist_fixed_token' | 'update_price' | 'buy'
 
 export const ExecuteMsg = {
-  LIST_FIXED_TOKEN: 'list_fixed_token',
-  DELIST_FIXED_TOKEN: 'delist_fixed_token',
-  UPDATE_PRICE: 'update_price',
-  BUY: 'buy'
+  LIST_FIXED_TOKEN: 'list_fixed_token' as ExecuteMsg,
+  DELIST_FIXED_TOKEN: 'delist_fixed_token' as ExecuteMsg,
+  UPDATE_PRICE: 'update_price' as ExecuteMsg,
+  BUY: 'buy' as ExecuteMsg
 }
 
 export type QueryMsg = 'config' | 'fixed_listing'
 
 export const QueryMsg = {
-  CONFIG: 'config',
-  FIXED_LISTING: 'fixed_listing'
+  CONFIG: 'config' as QueryMsg,
+  FIXED_LISTING: 'fixed_listing' as QueryMsg
 }
 
 export interface InstantiateMsg {
