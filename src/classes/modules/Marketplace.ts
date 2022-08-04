@@ -12,7 +12,9 @@ import {
   ListFixedTokenMsg,
   DelistFixedTokenMsg,
   UpdatePriceMsg,
-  BuyMsg
+  BuyMsg,
+  ExecuteMsg,
+  QueryMsg
 } from '../../types/modules/marketplace'
 
 const CODE_ID = 1
@@ -35,11 +37,17 @@ export class MarketplaceModule extends ContractWrapper {
     token_id,
     price
   }: ListFixedTokenMsg): Promise<ExecuteResult> {
-    return super.execute({ collection_id, token_id, price }, 'auto')
+    return super.execute(
+      { [`${ExecuteMsg.LIST_FIXED_TOKEN}`]: { collection_id, token_id, price } },
+      'auto'
+    )
   }
 
   async delistFixedToken({ collection_id, token_id }: DelistFixedTokenMsg): Promise<ExecuteResult> {
-    return super.execute({ collection_id, token_id }, 'auto')
+    return super.execute(
+      { [`${ExecuteMsg.DELIST_FIXED_TOKEN}`]: { collection_id, token_id } },
+      'auto'
+    )
   }
 
   async updatePrice({
@@ -50,24 +58,31 @@ export class MarketplaceModule extends ContractWrapper {
   }: UpdatePriceMsg): Promise<ExecuteResult> {
     return super.execute(
       {
-        listing_type,
-        collection_id,
-        token_id,
-        price
+        [`${ExecuteMsg.UPDATE_PRICE}`]: {
+          listing_type,
+          collection_id,
+          token_id,
+          price
+        }
       },
       'auto'
     )
   }
 
   async buy({ listing_type, collection_id, token_id }: BuyMsg): Promise<ExecuteResult> {
-    return super.execute({ listing_type, collection_id, token_id }, 'auto')
+    return super.execute(
+      {
+        [`${ExecuteMsg.BUY}`]: { listing_type, collection_id, token_id }
+      },
+      'auto'
+    )
   }
 
   async getConfig(): Promise<any> {
-    return super.query({ config: {} })
+    return super.query({ [`${QueryMsg.CONFIG}`]: {} })
   }
 
-  async getOperators(): Promise<any> {
-    return super.query({ operators: {} })
+  async getFixedListing(): Promise<any> {
+    return super.query({ [`${QueryMsg.FIXED_LISTING}`]: {} })
   }
 }
