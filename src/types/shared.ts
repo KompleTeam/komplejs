@@ -1,8 +1,12 @@
+export type Modules = 'Mint' | 'Merge' | 'Marketplace' | 'Permission' | 'Swap'
+
 export type Collections =
   | 'Normal'
   // | 'Multiple'
   | 'Linked'
 // | 'OneToOne'
+
+export type Permissions = 'Ownership' | 'Attribute'
 
 export interface CollectionInfo {
   collection_type: Collections

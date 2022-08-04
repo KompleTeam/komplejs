@@ -3,7 +3,7 @@ import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr } from 'cosmwasm'
 import { CONTRACTS, MODULES } from './types'
 
 import { ControllerContract } from './classes/contracts'
-import { MintModule } from './classes/modules'
+import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './classes/modules'
 
 export class RiftClient {
   client: SigningCosmWasmClient | null
@@ -53,6 +53,12 @@ export class RiftClient {
     switch (module) {
       case MODULES.MINT:
         return new MintModule(this.client, this.signer, address)
+      case MODULES.MERGE:
+        return new MergeModule(this.client, this.signer, address)
+      case MODULES.MARKETPLACE:
+        return new MarketplaceModule(this.client, this.signer, address)
+      case MODULES.PERMISSION:
+        return new PermissionModule(this.client, this.signer, address)
       default:
         throw new Error('Invalid contract')
     }
