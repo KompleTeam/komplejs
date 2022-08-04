@@ -10,12 +10,30 @@ export type ExecuteMsg =
   | 'update_operators'
   | 'update_linked_collections'
 
+export const ExecuteMsg = {
+  CREATE_COLLECTION: 'create_collection',
+  UPDATE_MINT_LOCK: 'update_mint_lock',
+  MINT: 'mint',
+  MINT_TO: 'mint_to',
+  PERMISSION_MINT: 'permission_mint',
+  UPDATE_OPERATORS: 'update_operators',
+  UPDATE_LINKED_COLLECTIONS: 'update_linked_collections'
+}
+
 export type QueryMsg =
   | 'config'
   | 'collection_address'
   | 'operators'
   | 'collection_types'
   | 'linked_collections'
+
+export const QueryMsg = {
+  CONFIG: 'config',
+  COLLECTION_ADDRESS: 'collection_address',
+  OPERATORS: 'operators',
+  COLLECTION_TYPES: 'collection_types',
+  LINKED_COLLECTIONS: 'linked_collections'
+}
 
 export interface InstantiateMsg {
   admin: string

@@ -7,7 +7,6 @@ import {
   StdFee
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
-import { MODULES } from '../../types'
 import {
   InstantiateMsg,
   CreateCollectionMsg,
@@ -16,8 +15,11 @@ import {
   MintToMsg,
   PermissionMintMsg,
   UpdateOperatorsMsg,
-  UpdateLinkedCollections
+  UpdateLinkedCollections,
+  ExecuteMsg,
+  QueryMsg
 } from '../../types/modules/mint'
+import { Collections } from '../../types/shared'
 
 const CODE_ID = 1
 
@@ -34,43 +36,86 @@ export class MintModule extends ContractWrapper {
     return super.instantiate(CODE_ID, { admin }, 'Rift Framework Mint Module', fee, options)
   }
 
-  async createCollection(msg: CreateCollectionMsg): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+  async createCollection({
+    code_id,
+    collection_info,
+    token_info,
+    per_address_limit,
+    start_time,
+    unit_price,
+    native_denom,
+    linked_collections
+  }: CreateCollectionMsg): Promise<ExecuteResult> {
+    return super.execute(
+      {
+        [`${ExecuteMsg.CREATE_COLLECTION}`]: {
+          code_id,
+          collection_info,
+          token_info,
+          per_address_limit,
+          start_time,
+          unit_price,
+          native_denom,
+          linked_collections
+        }
+      },
+      'auto'
+    )
   }
 
   async updateMintLock({ lock }: UpdateMintLockMsg): Promise<ExecuteResult> {
-    return super.execute({ lock }, 'auto')
+    return super.execute({ [`${ExecuteMsg.UPDATE_MINT_LOCK}`]: { lock } }, 'auto')
   }
 
   async mint({ collection_id }: MintMsg): Promise<ExecuteResult> {
-    return super.execute({ collection_id }, 'auto')
+    return super.execute({ [`${ExecuteMsg.MINT}`]: { collection_id } }, 'auto')
   }
 
-  async mintTo(msg: MintToMsg): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+  async mintTo({ collection_id, recipient }: MintToMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${ExecuteMsg.MINT_TO}`]: { collection_id, recipient } }, 'auto')
   }
 
-  async permissionMint(msg: PermissionMintMsg): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+  async permissionMint({
+    permission_msg,
+    collection_ids
+  }: PermissionMintMsg): Promise<ExecuteResult> {
+    return super.execute(
+      { [`${ExecuteMsg.PERMISSION_MINT}`]: { permission_msg, collection_ids } },
+      'auto'
+    )
   }
 
-  async updateOperators(msg: UpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+  async updateOperators({ addrs }: UpdateOperatorsMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
   }
 
-  async updateLinkedCollections(msg: UpdateLinkedCollections): Promise<ExecuteResult> {
-    return super.execute(msg, 'auto')
+  async updateLinkedCollections({
+    collection_id,
+    linked_collections
+  }: UpdateLinkedCollections): Promise<ExecuteResult> {
+    return super.execute(
+      { [`${ExecuteMsg.UPDATE_LINKED_COLLECTIONS}`]: { collection_id, linked_collections } },
+      'auto'
+    )
   }
 
   async getConfig(): Promise<any> {
-    return super.query({ config: {} })
+    return super.query({ [`${QueryMsg.CONFIG}`]: {} })
   }
 
-  async getControllerInfo(): Promise<any> {
-    return super.query({ controller_info: {} })
+  async getCollectionAddres(collectionId: number): Promise<any> {
+    return super.query({ [`${QueryMsg.COLLECTION_ADDRESS}`]: collectionId })
   }
 
-  async getModuleAddress(module: MODULES): Promise<any> {
-    return super.query({ module_address: module })
+  async getOperators(): Promise<any> {
+    return super.query({ [`${QueryMsg.OPERATORS}`]: {} })
+  }
+
+  async getCollectionTypes(collection: Collections): Promise<any> {
+    return super.query({ [`${QueryMsg.COLLECTION_TYPES}`]: collection })
+  }
+
+  async getLinkedCollections(collectionId: number): Promise<any> {
+    return super.query({ [`${QueryMsg.LINKED_COLLECTIONS}`]: { collection_id: collectionId } })
   }
 }
