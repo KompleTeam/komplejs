@@ -7,7 +7,6 @@ import {
   StdFee
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
-import { MODULES } from '../../types'
 import {
   InstantiateMsg,
   UpdateStartTimeMsg,
@@ -86,9 +85,5 @@ export class WhitelistContract extends ContractWrapper {
 
   async getHasMember(member: string): Promise<any> {
     return super.query({ [`${QueryMsg.HAS_MEMBER}`]: { member } })
-  }
-
-  async getModuleAddress(module: MODULES): Promise<any> {
-    return super.query({ module_address: module })
   }
 }
