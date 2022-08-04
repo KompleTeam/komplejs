@@ -1,14 +1,8 @@
-import DummyClass from "../src/rift-js"
+import 'jest'
+import { RiftClient } from '../src'
 
-/**
- * Dummy test
- */
-describe("Dummy test", () => {
-  it("works if true is truthy", () => {
-    expect(true).toBeTruthy()
-  })
-
-  it("DummyClass is instantiable", () => {
-    expect(new DummyClass()).toBeInstanceOf(DummyClass)
+describe('Rift Client', () => {
+  it('RiftClient is instantiable', () => {
+    expect(new RiftClient()).toBeInstanceOf(RiftClient)
   })
 })

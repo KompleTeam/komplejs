@@ -1,0 +1,1 @@
+export { MintModule } from './Mint'
