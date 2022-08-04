@@ -8,6 +8,10 @@ export type Collections =
 
 export type Permissions = 'Ownership' | 'Attribute'
 
+export type Metadata = 'OneToOne' | 'Static' | 'Dynamic'
+
+export type Royalty = 'Admins' | 'Owners' | 'Tokens'
+
 export interface CollectionInfo {
   collection_type: Collections
   name: string
@@ -22,3 +26,10 @@ export interface TokenInfo {
 }
 
 export type Expiration = { at_height: number } | { at_time: string } | { never: object }
+
+export interface Locks {
+  mint_lock: boolean
+  burn_lock: boolean
+  transfer_lock: boolean
+  send_lock: boolean
+}

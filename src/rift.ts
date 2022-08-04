@@ -2,7 +2,7 @@ import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr } from 'cosmwasm'
 
 import { CONTRACTS, MODULES } from './types'
 
-import { ControllerContract } from './classes/contracts'
+import { ControllerContract, TokenContract } from './classes/contracts'
 import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './classes/modules'
 
 export class RiftClient {
@@ -34,8 +34,8 @@ export class RiftClient {
     switch (contract) {
       case CONTRACTS.CONTROLLER:
         return new ControllerContract(this.client, this.signer, address)
-      // case 'token':
-      //   return new Token(this.client, address)
+      case CONTRACTS.TOKEN:
+        return new TokenContract(this.client, this.signer, address)
       // case 'metadata':
       //   return new Metadata(this.client, address)
       // case 'whitelist':
