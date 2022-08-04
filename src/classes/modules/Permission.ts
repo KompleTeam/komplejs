@@ -11,7 +11,9 @@ import {
   InstantiateMsg,
   UpdateModulePermissionsMsg,
   UpdateOperatorsMsg,
-  CheckMsg
+  CheckMsg,
+  ExecuteMsg,
+  QueryMsg
 } from '../../types/modules/permission'
 import { Modules } from '../../types/shared'
 
@@ -34,28 +36,25 @@ export class PermissionModule extends ContractWrapper {
     module,
     permissions
   }: UpdateModulePermissionsMsg): Promise<ExecuteResult> {
-    return super.execute({ module, permissions }, 'auto')
-  }
-
-  async updateOperators({ addrs }: UpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute({ addrs }, 'auto')
-  }
-
-  async check({ module, msg }: CheckMsg): Promise<ExecuteResult> {
     return super.execute(
-      {
-        module,
-        msg
-      },
+      { [`${ExecuteMsg.UPDATE_MODULE_PERMISSIONS}`]: { module, permissions } },
       'auto'
     )
   }
 
+  async updateOperators({ addrs }: UpdateOperatorsMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
+  }
+
+  async check({ module, msg }: CheckMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${ExecuteMsg.CHECK}`]: { module, msg } }, 'auto')
+  }
+
   async getModulePermissions(module: Modules): Promise<any> {
-    return super.query({ module_permissions: module })
+    return super.query({ [`${QueryMsg.MODULE_PERMISSIONS}`]: module })
   }
 
   async getOperators(): Promise<any> {
-    return super.query({ operators: {} })
+    return super.query({ [`${QueryMsg.OPERATORS}`]: {} })
   }
 }
