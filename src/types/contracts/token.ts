@@ -1,5 +1,5 @@
 import { Coin } from 'cosmwasm'
-import { CollectionInfo, Expiration, Locks, Metadata, Royalty, TokenInfo } from '../shared'
+import { CollectionInfo, Expiration, Locks, Metadata, TokenInfo } from '../shared'
 
 export type ExecuteMsg =
   | 'transfer_nft'
@@ -11,6 +11,7 @@ export type ExecuteMsg =
   | 'mint'
   | 'burn'
   | 'update_operators'
+  | 'update_royalty_share'
   | 'admin_transfer_nft'
   | 'update_locks'
   | 'update_token_locks'
@@ -18,10 +19,8 @@ export type ExecuteMsg =
   | 'update_per_address_limit'
   | 'update_start_time'
   | 'update_whitelist'
-  | 'update_royalty'
   | 'update_metadata'
   | 'init_metadata_contract'
-  | 'init_royalty_contract'
   | 'init_whitelist_contract'
 
 export const ExecuteMsg = {
@@ -34,6 +33,7 @@ export const ExecuteMsg = {
   MINT: 'mint' as ExecuteMsg,
   BURN: 'burn' as ExecuteMsg,
   UPDATE_OPERATORS: 'update_operators' as ExecuteMsg,
+  UPDATE_ROYALTY_SHARE: 'update_royalty_share' as ExecuteMsg,
   ADMIN_TRANSFER_NFT: 'admin_transfer_nft' as ExecuteMsg,
   UPDATE_LOCKS: 'update_locks' as ExecuteMsg,
   UPDATE_TOKEN_LOCKS: 'update_token_locks' as ExecuteMsg,
@@ -41,10 +41,8 @@ export const ExecuteMsg = {
   UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as ExecuteMsg,
   UPDATE_START_TIME: 'update_start_time' as ExecuteMsg,
   UPDATE_WHITELIST: 'update_whitelist' as ExecuteMsg,
-  UPDATE_ROYALTY: 'update_royalty' as ExecuteMsg,
   UPDATE_METADATA: 'update_metadata' as ExecuteMsg,
   INIT_METADATA_CONTRACT: 'init_metadata_contract' as ExecuteMsg,
-  INIT_ROYALTY_CONTRACT: 'init_royalty_contract' as ExecuteMsg,
   INIT_WHITELIST_CONTRACT: 'init_whitelist_contract' as ExecuteMsg
 }
 
@@ -143,6 +141,10 @@ export interface UpdateOperatorsMsg {
   addrs: string[]
 }
 
+export interface UpdateRoyaltyShareMsg {
+  royalty_share: string
+}
+
 export interface AdminTransferNftMsg {
   recipient: string
   token_id: string
@@ -173,10 +175,6 @@ export interface UpdateWhitelistMsg {
   whitelist?: string
 }
 
-export interface UpdateRoyaltyMsg {
-  royalty?: string
-}
-
 export interface UpdateMetadataMsg {
   metadata?: string
 }
@@ -184,12 +182,6 @@ export interface UpdateMetadataMsg {
 export interface InitMetadataContractMsg {
   code_id: number
   metadata_type: Metadata
-}
-
-export interface InitRoyaltyContractMsg {
-  code_id: number
-  share: string
-  royalty_type: Royalty
 }
 
 export interface InitWhitelistContractMsg {

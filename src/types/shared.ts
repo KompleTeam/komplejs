@@ -10,8 +10,6 @@ export type Permissions = 'Ownership' | 'Attribute'
 
 export type Metadata = 'OneToOne' | 'Static' | 'Dynamic'
 
-export type Royalty = 'Admins' | 'Owners' | 'Tokens'
-
 export interface CollectionInfo {
   collection_type: Collections
   name: string

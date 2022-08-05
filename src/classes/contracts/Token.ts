@@ -17,6 +17,7 @@ import {
   MintMsg,
   BurnMsg,
   UpdateOperatorsMsg,
+  UpdateRoyaltyShareMsg,
   AdminTransferNftMsg,
   UpdateLocksMsg,
   UpdateTokenLocksMsg,
@@ -24,10 +25,8 @@ import {
   UpdatePerAddressLimitMsg,
   UpdateStartTimeMsg,
   UpdateWhitelistMsg,
-  UpdateRoyaltyMsg,
   UpdateMetadataMsg,
   InitMetadataContractMsg,
-  InitRoyaltyContractMsg,
   InitWhitelistContractMsg,
   ExecuteMsg,
   QueryMsg
@@ -111,6 +110,10 @@ export class TokenContract extends ContractWrapper {
     return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
   }
 
+  async updateRoyaltyShare({ royalty_share }: UpdateRoyaltyShareMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${ExecuteMsg.UPDATE_ROYALTY_SHARE}`]: { royalty_share } }, 'auto')
+  }
+
   async adminTransferNft({ recipient, token_id }: AdminTransferNftMsg): Promise<ExecuteResult> {
     return super.execute({ [`${ExecuteMsg.ADMIN_TRANSFER_NFT}`]: { recipient, token_id } }, 'auto')
   }
@@ -144,10 +147,6 @@ export class TokenContract extends ContractWrapper {
     return super.execute({ [`${ExecuteMsg.UPDATE_WHITELIST}`]: { whitelist } }, 'auto')
   }
 
-  async updateRoyaltyContract({ royalty }: UpdateRoyaltyMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.UPDATE_ROYALTY}`]: { royalty } }, 'auto')
-  }
-
   async updateMetadataContract({ metadata }: UpdateMetadataMsg): Promise<ExecuteResult> {
     return super.execute({ [`${ExecuteMsg.UPDATE_METADATA}`]: { metadata } }, 'auto')
   }
@@ -158,17 +157,6 @@ export class TokenContract extends ContractWrapper {
   }: InitMetadataContractMsg): Promise<ExecuteResult> {
     return super.execute(
       { [`${ExecuteMsg.INIT_METADATA_CONTRACT}`]: { code_id, metadata_type } },
-      'auto'
-    )
-  }
-
-  async initRoyaltyContract({
-    code_id,
-    share,
-    royalty_type
-  }: InitRoyaltyContractMsg): Promise<ExecuteResult> {
-    return super.execute(
-      { [`${ExecuteMsg.INIT_ROYALTY_CONTRACT}`]: { code_id, share, royalty_type } },
       'auto'
     )
   }
