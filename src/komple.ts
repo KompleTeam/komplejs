@@ -43,38 +43,26 @@ export class KompleClient implements KompleClientInterface {
   }
 
   getControllerContract(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new ControllerContract(this.client, this.signer, contractAddress)
   }
 
   getTokenContract(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new TokenContract(this.client, this.signer, contractAddress)
   }
 
   getMintModule(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new MintModule(this.client, this.signer, contractAddress)
   }
 
   getMergeModule(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new MergeModule(this.client, this.signer, contractAddress)
   }
 
   getMarketplaceModule(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new MarketplaceModule(this.client, this.signer, contractAddress)
   }
 
   getPermissionModule(contractAddress?: string) {
-    if (!this.client) throw new Error('Client not initialized')
-    if (!this.signer) throw new Error('Signer not initialized')
     return new PermissionModule(this.client, this.signer, contractAddress)
   }
 }

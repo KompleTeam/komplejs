@@ -23,7 +23,11 @@ import { Collections } from '../../types/shared'
 const CODE_ID = 1
 
 export class MintModule extends ContractWrapper {
-  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
+  constructor(
+    client: SigningCosmWasmClient | null,
+    signer: OfflineSigner | null,
+    contractAddress?: string
+  ) {
     super(client, signer, contractAddress)
   }
 
