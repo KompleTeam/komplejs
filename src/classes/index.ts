@@ -1,1 +1,0 @@
-export { ControllerContract } from './contracts'

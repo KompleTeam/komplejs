@@ -6,16 +6,14 @@ import {
   SigningCosmWasmClient
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
-import { MODULES } from '../../types'
+import { MODULES } from '../types'
 import {
   InstantiateMsg,
   InitModuleMsg,
   InitMarketplaceModuleMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/contracts/controller'
-
-const CODE_ID = 1
+} from '../types/contracts/controller'
 
 export class ControllerContract extends ContractWrapper {
   constructor(
@@ -27,11 +25,12 @@ export class ControllerContract extends ContractWrapper {
   }
 
   async init(
+    codeId: number,
     { name, description, image, external_link }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
-      CODE_ID,
+      codeId,
       { name, description, image, external_link },
       'Komple Framework Controller Contract',
       'auto',

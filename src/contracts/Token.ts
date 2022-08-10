@@ -30,9 +30,7 @@ import {
   InitWhitelistContractMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/contracts/token'
-
-const CODE_ID = 1
+} from '../types/contracts/token'
 
 export class TokenContract extends ContractWrapper {
   constructor(
@@ -44,6 +42,7 @@ export class TokenContract extends ContractWrapper {
   }
 
   async init(
+    codeId: number,
     {
       admin,
       token_info,
@@ -57,7 +56,7 @@ export class TokenContract extends ContractWrapper {
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
-      CODE_ID,
+      codeId,
       {
         admin,
         token_info,

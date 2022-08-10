@@ -13,10 +13,8 @@ import {
   CheckMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/modules/permission'
-import { Modules } from '../../types/shared'
-
-const CODE_ID = 1
+} from '../types/modules/permission'
+import { Modules } from '../types/shared'
 
 export class PermissionModule extends ContractWrapper {
   constructor(
@@ -27,9 +25,13 @@ export class PermissionModule extends ContractWrapper {
     super(client, signer, contractAddress)
   }
 
-  async init({ admin }: InstantiateMsg, options?: InstantiateOptions): Promise<InstantiateResult> {
+  async init(
+    codeId: number,
+    { admin }: InstantiateMsg,
+    options?: InstantiateOptions
+  ): Promise<InstantiateResult> {
     return super.instantiate(
-      CODE_ID,
+      codeId,
       { admin },
       'Komple Framework Permission Module',
       'auto',

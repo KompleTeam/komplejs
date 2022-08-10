@@ -29,7 +29,7 @@ export class ContractWrapper {
     return account[0]
   }
 
-  updateContractAddress(address: string) {
+  updateAddress(address: string) {
     this.address = address
   }
 

@@ -14,9 +14,7 @@ import {
   UpdateOperatorsMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/modules/merge'
-
-const CODE_ID = 1
+} from '../types/modules/merge'
 
 export class MergeModule extends ContractWrapper {
   constructor(
@@ -27,8 +25,12 @@ export class MergeModule extends ContractWrapper {
     super(client, signer, contractAddress)
   }
 
-  async init({ admin }: InstantiateMsg, options?: InstantiateOptions): Promise<InstantiateResult> {
-    return super.instantiate(CODE_ID, { admin }, 'Komple Framework Merge Module', 'auto', options)
+  async init(
+    codeId: number,
+    { admin }: InstantiateMsg,
+    options?: InstantiateOptions
+  ): Promise<InstantiateResult> {
+    return super.instantiate(codeId, { admin }, 'Komple Framework Merge Module', 'auto', options)
   }
 
   async updateMergeLock({ lock }: UpdateMergeLockMsg): Promise<ExecuteResult> {

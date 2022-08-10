@@ -14,9 +14,7 @@ import {
   BuyMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/modules/marketplace'
-
-const CODE_ID = 1
+} from '../types/modules/marketplace'
 
 export class MarketplaceModule extends ContractWrapper {
   constructor(
@@ -27,9 +25,13 @@ export class MarketplaceModule extends ContractWrapper {
     super(client, signer, contractAddress)
   }
 
-  async init({ admin }: InstantiateMsg, options?: InstantiateOptions): Promise<InstantiateResult> {
+  async init(
+    codeId: number,
+    { admin }: InstantiateMsg,
+    options?: InstantiateOptions
+  ): Promise<InstantiateResult> {
     return super.instantiate(
-      CODE_ID,
+      codeId,
       { admin },
       'Komple Framework Marketplace Module',
       'auto',

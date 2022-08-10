@@ -1,14 +1,12 @@
 import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr, GasPrice } from 'cosmwasm'
-
-import { ControllerContract, TokenContract } from './classes/contracts'
-import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './classes/modules'
+import { ControllerContract, TokenContract } from './contracts'
+import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './modules'
 
 interface KompleClientInterface {
   client: SigningCosmWasmClient | null
   signer: OfflineSigner | null
 
   setupSigningClient: (endpoint: string, signer: OfflineSigner) => Promise<void>
-  setupKeplrClient: (config: any) => Promise<void>
 
   getControllerContract: (contractAddress?: string) => ControllerContract
   getTokenContract: (contractAddress?: string) => TokenContract
@@ -20,12 +18,11 @@ interface KompleClientInterface {
 }
 
 export class KompleClient implements KompleClientInterface {
-  client: SigningCosmWasmClient | null
-  signer: OfflineSigner | null
+  client: SigningCosmWasmClient | null = null
+  signer: OfflineSigner | null = null
 
-  constructor() {
-    this.signer = null
-    this.client = null
+  constructor(endpoint: string, signer: OfflineSigner) {
+    this.setupSigningClient(endpoint, signer)
   }
 
   async setupSigningClient(endpoint: string, signer: OfflineSigner) {
@@ -35,14 +32,6 @@ export class KompleClient implements KompleClientInterface {
     })
     this.client = client
     this.signer = signer
-  }
-
-  async setupKeplrClient(config: any) {
-    const anyWindow = window as any
-    const offlineSigner = await anyWindow.getOfflineSignerAuto(config.chainId)
-    const client = await setupWebKeplr(config)
-    this.client = client
-    this.signer = offlineSigner
   }
 
   getControllerContract(contractAddress?: string) {

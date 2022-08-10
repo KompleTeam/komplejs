@@ -16,9 +16,7 @@ import {
   UpdateMemberLimitMsg,
   ExecuteMsg,
   QueryMsg
-} from '../../types/contracts/whitelist'
-
-const CODE_ID = 1
+} from '../types/contracts/whitelist'
 
 export class WhitelistContract extends ContractWrapper {
   constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
@@ -26,11 +24,12 @@ export class WhitelistContract extends ContractWrapper {
   }
 
   async init(
+    codeId: number,
     { members, start_time, end_time, unit_price, per_address_limit, member_limit }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     return super.instantiate(
-      CODE_ID,
+      codeId,
       { members, start_time, end_time, unit_price, per_address_limit, member_limit },
       'Komple Framework Whitelist Contract',
       'auto',

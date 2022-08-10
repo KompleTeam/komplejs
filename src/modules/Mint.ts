@@ -18,10 +18,8 @@ import {
   UpdateLinkedCollections,
   ExecuteMsg,
   QueryMsg
-} from '../../types/modules/mint'
-import { Collections } from '../../types/shared'
-
-const CODE_ID = 1
+} from '../types/modules/mint'
+import { Collections } from '../types/shared'
 
 export class MintModule extends ContractWrapper {
   constructor(
@@ -32,8 +30,12 @@ export class MintModule extends ContractWrapper {
     super(client, signer, contractAddress)
   }
 
-  async init({ admin }: InstantiateMsg, options?: InstantiateOptions): Promise<InstantiateResult> {
-    return super.instantiate(CODE_ID, { admin }, 'Komple Framework Mint Module', 'auto', options)
+  async init(
+    codeId: number,
+    { admin }: InstantiateMsg,
+    options?: InstantiateOptions
+  ): Promise<InstantiateResult> {
+    return super.instantiate(codeId, { admin }, 'Komple Framework Mint Module', 'auto', options)
   }
 
   async createCollection({
