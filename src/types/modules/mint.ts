@@ -3,6 +3,7 @@ import { CollectionInfo, TokenInfo } from '../shared'
 
 export type ExecuteMsg =
   | 'create_collection'
+  | 'update_public_collection_creation'
   | 'update_mint_lock'
   | 'mint'
   | 'mint_to'
@@ -12,6 +13,7 @@ export type ExecuteMsg =
 
 export const ExecuteMsg = {
   CREATE_COLLECTION: 'create_collection' as ExecuteMsg,
+  UPDATE_PUBLIC_COLLECTION_CREATION: 'update_public_collection_creation' as ExecuteMsg,
   UPDATE_MINT_LOCK: 'update_mint_lock' as ExecuteMsg,
   MINT: 'mint' as ExecuteMsg,
   MINT_TO: 'mint_to' as ExecuteMsg,
@@ -48,6 +50,10 @@ export interface CreateCollectionMsg {
   unit_price?: Coin
   native_denom: string
   linked_collections?: number[]
+}
+
+export interface UpdatePublicCollectionCreation {
+  public_collection_creation: boolean
 }
 
 export interface UpdateMintLockMsg {

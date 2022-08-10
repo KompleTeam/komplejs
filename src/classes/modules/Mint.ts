@@ -9,6 +9,7 @@ import { ContractWrapper } from '../ContractWrapper'
 import {
   InstantiateMsg,
   CreateCollectionMsg,
+  UpdatePublicCollectionCreation,
   UpdateMintLockMsg,
   MintMsg,
   MintToMsg,
@@ -58,6 +59,15 @@ export class MintModule extends ContractWrapper {
           linked_collections
         }
       },
+      'auto'
+    )
+  }
+
+  async updatePublicCollectionCreation({
+    public_collection_creation
+  }: UpdatePublicCollectionCreation): Promise<ExecuteResult> {
+    return super.execute(
+      { [`${ExecuteMsg.UPDATE_PUBLIC_COLLECTION_CREATION}`]: { public_collection_creation } },
       'auto'
     )
   }
