@@ -1,4 +1,4 @@
-import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr } from 'cosmwasm'
+import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr, GasPrice } from 'cosmwasm'
 
 import { ControllerContract, TokenContract } from './classes/contracts'
 import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './classes/modules'
@@ -29,7 +29,10 @@ export class KompleClient implements KompleClientInterface {
   }
 
   async setupSigningClient(endpoint: string, signer: OfflineSigner) {
-    const client = await SigningCosmWasmClient.connectWithSigner(endpoint, signer)
+    const client = await SigningCosmWasmClient.connectWithSigner(endpoint, signer, {
+      gasPrice: GasPrice.fromString('0.025ujunox'),
+      prefix: 'juno'
+    })
     this.client = client
     this.signer = signer
   }
