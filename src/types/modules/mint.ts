@@ -11,7 +11,7 @@ export type MintModuleExecuteMsg =
   | 'update_operators'
   | 'update_linked_collections'
 
-export const MintExecuteMsg = {
+export const MintModuleExecuteMsg = {
   CREATE_COLLECTION: 'create_collection' as MintModuleExecuteMsg,
   UPDATE_PUBLIC_COLLECTION_CREATION: 'update_public_collection_creation' as MintModuleExecuteMsg,
   UPDATE_MINT_LOCK: 'update_mint_lock' as MintModuleExecuteMsg,
@@ -29,7 +29,7 @@ export type MintModuleQueryMsg =
   | 'collection_types'
   | 'linked_collections'
 
-export const MintQueryMsg = {
+export const MintModuleQueryMsg = {
   CONFIG: 'config' as MintModuleQueryMsg,
   COLLECTION_ADDRESS: 'collection_address' as MintModuleQueryMsg,
   OPERATORS: 'operators' as MintModuleQueryMsg,

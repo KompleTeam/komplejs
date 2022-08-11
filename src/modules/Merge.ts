@@ -7,13 +7,13 @@ import {
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
-  InstantiateMsg,
-  UpdateMergeLockMsg,
-  MergeMsg,
-  PermissionMergeMsg,
-  UpdateOperatorsMsg,
-  ExecuteMsg,
-  QueryMsg
+  MergeModuleInstantiateMsg,
+  MergeModuleUpdateMergeLockMsg,
+  MergeModuleMergeMsg,
+  MergeModulePermissionMergeMsg,
+  MergeModuleUpdateOperatorsMsg,
+  MergeModuleExecuteMsg,
+  MergeModuleQueryMsg
 } from '../types/modules/merge'
 
 export class MergeModule extends ContractWrapper {
@@ -23,7 +23,7 @@ export class MergeModule extends ContractWrapper {
 
   async init(
     codeId: number,
-    { admin }: InstantiateMsg,
+    { admin }: MergeModuleInstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     const result = await super.instantiate(
@@ -37,33 +37,33 @@ export class MergeModule extends ContractWrapper {
     return result
   }
 
-  async updateMergeLock({ lock }: UpdateMergeLockMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.UPDATE_MERGE_LOCK}`]: { lock } }, 'auto')
+  async updateMergeLock({ lock }: MergeModuleUpdateMergeLockMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${MergeModuleExecuteMsg.UPDATE_MERGE_LOCK}`]: { lock } }, 'auto')
   }
 
-  async merge({ msg }: MergeMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.MERGE}`]: { msg } }, 'auto')
+  async merge({ msg }: MergeModuleMergeMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${MergeModuleExecuteMsg.MERGE}`]: { msg } }, 'auto')
   }
 
   async permissionMerge({
     permission_merge,
     merge_msg
-  }: PermissionMergeMsg): Promise<ExecuteResult> {
+  }: MergeModulePermissionMergeMsg): Promise<ExecuteResult> {
     return super.execute(
-      { [`${ExecuteMsg.PERMISSION_MERGE}`]: { permission_merge, merge_msg } },
+      { [`${MergeModuleExecuteMsg.PERMISSION_MERGE}`]: { permission_merge, merge_msg } },
       'auto'
     )
   }
 
-  async updateOperators(msg: UpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { msg } }, 'auto')
+  async updateOperators(msg: MergeModuleUpdateOperatorsMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${MergeModuleExecuteMsg.UPDATE_OPERATORS}`]: { msg } }, 'auto')
   }
 
   async getConfig(): Promise<any> {
-    return super.query({ [`${QueryMsg.CONFIG}`]: {} })
+    return super.query({ [`${MergeModuleQueryMsg.CONFIG}`]: {} })
   }
 
   async getOperators(): Promise<any> {
-    return super.query({ [`${QueryMsg.OPERATORS}`]: {} })
+    return super.query({ [`${MergeModuleQueryMsg.OPERATORS}`]: {} })
   }
 }

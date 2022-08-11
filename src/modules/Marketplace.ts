@@ -7,13 +7,13 @@ import {
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
-  InstantiateMsg,
-  ListFixedTokenMsg,
-  DelistFixedTokenMsg,
-  UpdatePriceMsg,
-  BuyMsg,
-  ExecuteMsg,
-  QueryMsg
+  MarketplaceModuleInstantiateMsg,
+  MarketplaceModuleListFixedTokenMsg,
+  MarketplaceModuleDelistFixedTokenMsg,
+  MarketplaceModuleUpdatePriceMsg,
+  MarketplaceModuleBuyMsg,
+  MarketplaceModuleExecuteMsg,
+  MarketplaceModuleQueryMsg
 } from '../types/modules/marketplace'
 
 export class MarketplaceModule extends ContractWrapper {
@@ -23,7 +23,7 @@ export class MarketplaceModule extends ContractWrapper {
 
   async init(
     codeId: number,
-    { admin }: InstantiateMsg,
+    { admin }: MarketplaceModuleInstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     const result = await super.instantiate(
@@ -41,16 +41,19 @@ export class MarketplaceModule extends ContractWrapper {
     collection_id,
     token_id,
     price
-  }: ListFixedTokenMsg): Promise<ExecuteResult> {
+  }: MarketplaceModuleListFixedTokenMsg): Promise<ExecuteResult> {
     return super.execute(
-      { [`${ExecuteMsg.LIST_FIXED_TOKEN}`]: { collection_id, token_id, price } },
+      { [`${MarketplaceModuleExecuteMsg.LIST_FIXED_TOKEN}`]: { collection_id, token_id, price } },
       'auto'
     )
   }
 
-  async delistFixedToken({ collection_id, token_id }: DelistFixedTokenMsg): Promise<ExecuteResult> {
+  async delistFixedToken({
+    collection_id,
+    token_id
+  }: MarketplaceModuleDelistFixedTokenMsg): Promise<ExecuteResult> {
     return super.execute(
-      { [`${ExecuteMsg.DELIST_FIXED_TOKEN}`]: { collection_id, token_id } },
+      { [`${MarketplaceModuleExecuteMsg.DELIST_FIXED_TOKEN}`]: { collection_id, token_id } },
       'auto'
     )
   }
@@ -60,10 +63,10 @@ export class MarketplaceModule extends ContractWrapper {
     collection_id,
     token_id,
     price
-  }: UpdatePriceMsg): Promise<ExecuteResult> {
+  }: MarketplaceModuleUpdatePriceMsg): Promise<ExecuteResult> {
     return super.execute(
       {
-        [`${ExecuteMsg.UPDATE_PRICE}`]: {
+        [`${MarketplaceModuleExecuteMsg.UPDATE_PRICE}`]: {
           listing_type,
           collection_id,
           token_id,
@@ -74,20 +77,24 @@ export class MarketplaceModule extends ContractWrapper {
     )
   }
 
-  async buy({ listing_type, collection_id, token_id }: BuyMsg): Promise<ExecuteResult> {
+  async buy({
+    listing_type,
+    collection_id,
+    token_id
+  }: MarketplaceModuleBuyMsg): Promise<ExecuteResult> {
     return super.execute(
       {
-        [`${ExecuteMsg.BUY}`]: { listing_type, collection_id, token_id }
+        [`${MarketplaceModuleExecuteMsg.BUY}`]: { listing_type, collection_id, token_id }
       },
       'auto'
     )
   }
 
   async getConfig(): Promise<any> {
-    return super.query({ [`${QueryMsg.CONFIG}`]: {} })
+    return super.query({ [`${MarketplaceModuleQueryMsg.CONFIG}`]: {} })
   }
 
   async getFixedListing(): Promise<any> {
-    return super.query({ [`${QueryMsg.FIXED_LISTING}`]: {} })
+    return super.query({ [`${MarketplaceModuleQueryMsg.FIXED_LISTING}`]: {} })
   }
 }

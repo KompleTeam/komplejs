@@ -7,12 +7,12 @@ import {
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
-  InstantiateMsg,
-  UpdateModulePermissionsMsg,
-  UpdateOperatorsMsg,
-  CheckMsg,
-  ExecuteMsg,
-  QueryMsg
+  PermissionModuleInstantiateMsg,
+  PermissionModuleUpdateModulePermissionsMsg,
+  PermissionModuleUpdateOperatorsMsg,
+  PermissionModuleCheckMsg,
+  PermissionModuleExecuteMsg,
+  PermissionModuleQueryMsg
 } from '../types/modules/permission'
 import { Modules } from '../types/shared'
 
@@ -23,7 +23,7 @@ export class PermissionModule extends ContractWrapper {
 
   async init(
     codeId: number,
-    { admin }: InstantiateMsg,
+    { admin }: PermissionModuleInstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
     const result = await super.instantiate(
@@ -40,26 +40,26 @@ export class PermissionModule extends ContractWrapper {
   async updateModulePermissions({
     module,
     permissions
-  }: UpdateModulePermissionsMsg): Promise<ExecuteResult> {
+  }: PermissionModuleUpdateModulePermissionsMsg): Promise<ExecuteResult> {
     return super.execute(
-      { [`${ExecuteMsg.UPDATE_MODULE_PERMISSIONS}`]: { module, permissions } },
+      { [`${PermissionModuleExecuteMsg.UPDATE_MODULE_PERMISSIONS}`]: { module, permissions } },
       'auto'
     )
   }
 
-  async updateOperators({ addrs }: UpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
+  async updateOperators({ addrs }: PermissionModuleUpdateOperatorsMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${PermissionModuleExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
   }
 
-  async check({ module, msg }: CheckMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.CHECK}`]: { module, msg } }, 'auto')
+  async check({ module, msg }: PermissionModuleCheckMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${PermissionModuleExecuteMsg.CHECK}`]: { module, msg } }, 'auto')
   }
 
   async getModulePermissions(module: Modules): Promise<any> {
-    return super.query({ [`${QueryMsg.MODULE_PERMISSIONS}`]: module })
+    return super.query({ [`${PermissionModuleQueryMsg.MODULE_PERMISSIONS}`]: module })
   }
 
   async getOperators(): Promise<any> {
-    return super.query({ [`${QueryMsg.OPERATORS}`]: {} })
+    return super.query({ [`${PermissionModuleQueryMsg.OPERATORS}`]: {} })
   }
 }
