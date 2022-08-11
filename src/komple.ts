@@ -17,28 +17,12 @@ interface KompleClientInterface {
 }
 
 export class KompleClient implements KompleClientInterface {
-  private _client: SigningCosmWasmClient
-  private _signer: OfflineSigner
+  client: SigningCosmWasmClient
+  signer: OfflineSigner
 
   constructor(client: SigningCosmWasmClient, signer: OfflineSigner) {
-    this._client = client
-    this._signer = signer
-  }
-
-  get client() {
-    return this._client
-  }
-
-  set client(client: SigningCosmWasmClient) {
-    this._client = client
-  }
-
-  get signer() {
-    return this._signer
-  }
-
-  set signer(signer: OfflineSigner) {
-    this._signer = signer
+    this.client = client
+    this.signer = signer
   }
 
   getControllerContract(contractAddress?: string) {
