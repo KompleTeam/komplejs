@@ -15,18 +15,14 @@ import {
   MintToMsg,
   PermissionMintMsg,
   UpdateOperatorsMsg,
-  UpdateLinkedCollections,
+  UpdateLinkedCollectionsMsg,
   ExecuteMsg,
   QueryMsg
 } from '../types/modules/mint'
 import { Collections } from '../types/shared'
 
 export class MintModule extends ContractWrapper {
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    contractAddress?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -35,7 +31,15 @@ export class MintModule extends ContractWrapper {
     { admin }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(codeId, { admin }, 'Komple Framework Mint Module', 'auto', options)
+    const result = await super.instantiate(
+      codeId,
+      { admin },
+      'Komple Framework Mint Module',
+      'auto',
+      options
+    )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async createCollection({
@@ -103,7 +107,7 @@ export class MintModule extends ContractWrapper {
   async updateLinkedCollections({
     collection_id,
     linked_collections
-  }: UpdateLinkedCollections): Promise<ExecuteResult> {
+  }: UpdateLinkedCollectionsMsg): Promise<ExecuteResult> {
     return super.execute(
       { [`${ExecuteMsg.UPDATE_LINKED_COLLECTIONS}`]: { collection_id, linked_collections } },
       'auto'

@@ -1,4 +1,4 @@
-export { MintModule } from './Mint'
-export { MergeModule } from './Merge'
-export { MarketplaceModule } from './Marketplace'
-export { PermissionModule } from './Permission'
+export * from './Mint'
+export * from './Merge'
+export * from './Marketplace'
+export * from './Permission'

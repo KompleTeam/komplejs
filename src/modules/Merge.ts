@@ -17,11 +17,7 @@ import {
 } from '../types/modules/merge'
 
 export class MergeModule extends ContractWrapper {
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    contractAddress?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -30,7 +26,15 @@ export class MergeModule extends ContractWrapper {
     { admin }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(codeId, { admin }, 'Komple Framework Merge Module', 'auto', options)
+    const result = await super.instantiate(
+      codeId,
+      { admin },
+      'Komple Framework Merge Module',
+      'auto',
+      options
+    )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async updateMergeLock({ lock }: UpdateMergeLockMsg): Promise<ExecuteResult> {

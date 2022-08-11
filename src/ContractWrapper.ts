@@ -9,15 +9,11 @@ import {
 } from 'cosmwasm'
 
 export class ContractWrapper {
-  protected client: SigningCosmWasmClient | null
-  protected signer: OfflineSigner | null
+  protected client: SigningCosmWasmClient
+  protected signer: OfflineSigner
   protected address?: string
 
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    address?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, address?: string) {
     this.client = client
     this.signer = signer
     this.address = address
@@ -54,23 +50,13 @@ export class ContractWrapper {
   protected async execute(
     msg: any,
     fee: number | StdFee | 'auto',
-    memo?: string,
     funds?: Coin[]
   ): Promise<ExecuteResult> {
-    if (!this.client) throw new Error('Client is not initialized')
     if (!this.address) throw new Error('Contract address is missing!')
-    return this.client.execute(
-      (await this.getAccount()).address,
-      this.address,
-      msg,
-      fee,
-      memo,
-      funds
-    )
+    return this.client.execute((await this.getAccount()).address, this.address, msg, fee, '', funds)
   }
 
   protected async query(msg: any): Promise<any> {
-    if (!this.client) throw new Error('Client is not initialized')
     if (!this.address) throw new Error('Contract address is missing!')
     return this.client.queryContractSmart(this.address, msg)
   }

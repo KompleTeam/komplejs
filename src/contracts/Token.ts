@@ -21,7 +21,6 @@ import {
   AdminTransferNftMsg,
   UpdateLocksMsg,
   UpdateTokenLocksMsg,
-  UpdateOperationLockMsg,
   UpdatePerAddressLimitMsg,
   UpdateStartTimeMsg,
   UpdateWhitelistMsg,
@@ -33,11 +32,7 @@ import {
 } from '../types/contracts/token'
 
 export class TokenContract extends ContractWrapper {
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    contractAddress?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -55,7 +50,7 @@ export class TokenContract extends ContractWrapper {
     }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(
+    const result = await super.instantiate(
       codeId,
       {
         admin,
@@ -71,6 +66,8 @@ export class TokenContract extends ContractWrapper {
       'auto',
       options
     )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async transferNft({ recipient, token_id }: TransferNftMsg): Promise<ExecuteResult> {
@@ -123,10 +120,6 @@ export class TokenContract extends ContractWrapper {
 
   async updateTokenLocks({ locks }: UpdateTokenLocksMsg): Promise<ExecuteResult> {
     return super.execute({ [`${ExecuteMsg.UPDATE_TOKEN_LOCKS}`]: { locks } }, 'auto')
-  }
-
-  async updateOperationLock({ lock }: UpdateOperationLockMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${ExecuteMsg.UPDATE_OPERATION_LOCK}`]: { lock } }, 'auto')
   }
 
   async updatePerAddressLimit({

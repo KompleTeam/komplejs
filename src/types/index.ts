@@ -1,11 +1,3 @@
-export {
-  CONTRACTS,
-  // Controller Messages
-  ControllerInstantiateMsg,
-  ControllerExecuteMsg,
-  ControllerQueryMsg,
-  ControllerInitMarketplaceModuleMsg,
-  ControllerInitModuleMsg
-} from './contracts'
-
-export { MODULES } from './modules'
+export * from './contracts'
+export * from './modules'
+export * from './shared'

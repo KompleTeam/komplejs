@@ -1,3 +1,8 @@
+export * from './mint'
+export * from './merge'
+export * from './permission'
+export * from './marketplace'
+
 export type MODULES = 'mint' | 'merge' | 'permission' | 'marketplace'
 
 export const MODULES = {

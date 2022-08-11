@@ -1,36 +1,36 @@
-export type ExecuteMsg =
+export type ControllerContractExecuteMsg =
   | 'init_mint_module'
   | 'init_permission_module'
   | 'init_merge_module'
   | 'init_marketplace_module'
 
-export const ExecuteMsg = {
-  INIT_MINT_MODULE: 'init_mint_module' as ExecuteMsg,
-  INIT_PERMISSION_MODULE: 'init_permission_module' as ExecuteMsg,
-  INIT_MERGE_MODULE: 'init_merge_module' as ExecuteMsg,
-  INIT_MARKETPLACE_MODULE: 'init_marketplace_module' as ExecuteMsg
+export const ControllerContractExecuteMsg = {
+  INIT_MINT_MODULE: 'init_mint_module' as ControllerContractExecuteMsg,
+  INIT_PERMISSION_MODULE: 'init_permission_module' as ControllerContractExecuteMsg,
+  INIT_MERGE_MODULE: 'init_merge_module' as ControllerContractExecuteMsg,
+  INIT_MARKETPLACE_MODULE: 'init_marketplace_module' as ControllerContractExecuteMsg
 }
 
-export type QueryMsg = 'config' | 'controller_info' | 'module_address'
+export type ControllerContractQueryMsg = 'config' | 'controller_info' | 'module_address'
 
-export const QueryMsg = {
-  CONFIG: 'config' as QueryMsg,
-  CONTROLLER_INFO: 'controller_info' as QueryMsg,
-  MODULE_ADDRESS: 'module_address' as QueryMsg
+export const ControllerContractQueryMsg = {
+  CONFIG: 'config' as ControllerContractQueryMsg,
+  CONTROLLER_INFO: 'controller_info' as ControllerContractQueryMsg,
+  MODULE_ADDRESS: 'module_address' as ControllerContractQueryMsg
 }
 
-export interface InstantiateMsg {
+export interface ControllerContractInstantiateMsg {
   name: string
   description: string
   image: string
   external_link?: string
 }
 
-export interface InitModuleMsg {
+export interface ControllerContractInitModuleMsg {
   code_id: number
 }
 
-export interface InitMarketplaceModuleMsg {
+export interface ControllerContractInitMarketplaceModuleMsg {
   code_id: number
   native_denom: string
 }

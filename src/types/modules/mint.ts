@@ -1,7 +1,7 @@
 import { Coin } from 'cosmwasm'
 import { CollectionInfo, TokenInfo } from '../shared'
 
-export type ExecuteMsg =
+export type MintModuleExecuteMsg =
   | 'create_collection'
   | 'update_public_collection_creation'
   | 'update_mint_lock'
@@ -11,37 +11,37 @@ export type ExecuteMsg =
   | 'update_operators'
   | 'update_linked_collections'
 
-export const ExecuteMsg = {
-  CREATE_COLLECTION: 'create_collection' as ExecuteMsg,
-  UPDATE_PUBLIC_COLLECTION_CREATION: 'update_public_collection_creation' as ExecuteMsg,
-  UPDATE_MINT_LOCK: 'update_mint_lock' as ExecuteMsg,
-  MINT: 'mint' as ExecuteMsg,
-  MINT_TO: 'mint_to' as ExecuteMsg,
-  PERMISSION_MINT: 'permission_mint' as ExecuteMsg,
-  UPDATE_OPERATORS: 'update_operators' as ExecuteMsg,
-  UPDATE_LINKED_COLLECTIONS: 'update_linked_collections' as ExecuteMsg
+export const MintExecuteMsg = {
+  CREATE_COLLECTION: 'create_collection' as MintModuleExecuteMsg,
+  UPDATE_PUBLIC_COLLECTION_CREATION: 'update_public_collection_creation' as MintModuleExecuteMsg,
+  UPDATE_MINT_LOCK: 'update_mint_lock' as MintModuleExecuteMsg,
+  MINT: 'mint' as MintModuleExecuteMsg,
+  MINT_TO: 'mint_to' as MintModuleExecuteMsg,
+  PERMISSION_MINT: 'permission_mint' as MintModuleExecuteMsg,
+  UPDATE_OPERATORS: 'update_operators' as MintModuleExecuteMsg,
+  UPDATE_LINKED_COLLECTIONS: 'update_linked_collections' as MintModuleExecuteMsg
 }
 
-export type QueryMsg =
+export type MintModuleQueryMsg =
   | 'config'
   | 'collection_address'
   | 'operators'
   | 'collection_types'
   | 'linked_collections'
 
-export const QueryMsg = {
-  CONFIG: 'config' as QueryMsg,
-  COLLECTION_ADDRESS: 'collection_address' as QueryMsg,
-  OPERATORS: 'operators' as QueryMsg,
-  COLLECTION_TYPES: 'collection_types' as QueryMsg,
-  LINKED_COLLECTIONS: 'linked_collections' as QueryMsg
+export const MintQueryMsg = {
+  CONFIG: 'config' as MintModuleQueryMsg,
+  COLLECTION_ADDRESS: 'collection_address' as MintModuleQueryMsg,
+  OPERATORS: 'operators' as MintModuleQueryMsg,
+  COLLECTION_TYPES: 'collection_types' as MintModuleQueryMsg,
+  LINKED_COLLECTIONS: 'linked_collections' as MintModuleQueryMsg
 }
 
-export interface InstantiateMsg {
+export interface MintModuleInstantiateMsg {
   admin: string
 }
 
-export interface CreateCollectionMsg {
+export interface MintModuleCreateCollectionMsg {
   code_id: number
   collection_info: CollectionInfo
   token_info: TokenInfo
@@ -52,33 +52,33 @@ export interface CreateCollectionMsg {
   linked_collections?: number[]
 }
 
-export interface UpdatePublicCollectionCreation {
+export interface MintModuleUpdatePublicCollectionCreation {
   public_collection_creation: boolean
 }
 
-export interface UpdateMintLockMsg {
+export interface MintModuleUpdateMintLockMsg {
   lock: boolean
 }
 
-export interface MintMsg {
+export interface MintModuleMintMsg {
   collection_id: number
 }
 
-export interface MintToMsg {
+export interface MintModuleMintToMsg {
   collection_id: number
   recipient: string
 }
 
-export interface PermissionMintMsg {
+export interface MintModulePermissionMintMsg {
   permission_msg: string
   collection_ids: number[]
 }
 
-export interface UpdateOperatorsMsg {
+export interface MintModuleUpdateOperatorsMsg {
   addrs: string[]
 }
 
-export interface UpdateLinkedCollections {
+export interface MintModuleUpdateLinkedCollectionsMsg {
   collection_id: number
   linked_collections: number[]
 }

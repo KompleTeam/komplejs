@@ -1,2 +1,3 @@
-export { ControllerContract } from './Controller'
-export { TokenContract } from './Token'
+export * from './Controller'
+export * from './Token'
+export * from './Whitelist'

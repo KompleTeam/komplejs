@@ -28,13 +28,15 @@ export class WhitelistContract extends ContractWrapper {
     { members, start_time, end_time, unit_price, per_address_limit, member_limit }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(
+    const result = await super.instantiate(
       codeId,
       { members, start_time, end_time, unit_price, per_address_limit, member_limit },
       'Komple Framework Whitelist Contract',
       'auto',
       options
     )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async updateStartTime({ timestamp }: UpdateStartTimeMsg): Promise<ExecuteResult> {

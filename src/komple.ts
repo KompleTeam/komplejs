@@ -1,15 +1,14 @@
-import { SigningCosmWasmClient, OfflineSigner, setupWebKeplr, GasPrice } from 'cosmwasm'
-import { ControllerContract, TokenContract } from './contracts'
+import { SigningCosmWasmClient, OfflineSigner } from 'cosmwasm'
+import { ControllerContract, TokenContract, WhitelistContract } from './contracts'
 import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './modules'
 
 interface KompleClientInterface {
-  client: SigningCosmWasmClient | null
-  signer: OfflineSigner | null
-
-  setupSigningClient: (endpoint: string, signer: OfflineSigner) => Promise<void>
+  client: SigningCosmWasmClient
+  signer: OfflineSigner
 
   getControllerContract: (contractAddress?: string) => ControllerContract
   getTokenContract: (contractAddress?: string) => TokenContract
+  getWhitelistContract: (contractAddress?: string) => WhitelistContract
 
   getMintModule: (contractAddress?: string) => MintModule
   getMergeModule: (contractAddress?: string) => MergeModule
@@ -18,20 +17,28 @@ interface KompleClientInterface {
 }
 
 export class KompleClient implements KompleClientInterface {
-  client: SigningCosmWasmClient | null = null
-  signer: OfflineSigner | null = null
+  private _client: SigningCosmWasmClient
+  private _signer: OfflineSigner
 
-  constructor(endpoint: string, signer: OfflineSigner) {
-    this.setupSigningClient(endpoint, signer)
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner) {
+    this._client = client
+    this._signer = signer
   }
 
-  async setupSigningClient(endpoint: string, signer: OfflineSigner) {
-    const client = await SigningCosmWasmClient.connectWithSigner(endpoint, signer, {
-      gasPrice: GasPrice.fromString('0.025ujunox'),
-      prefix: 'juno'
-    })
-    this.client = client
-    this.signer = signer
+  get client() {
+    return this._client
+  }
+
+  set client(client: SigningCosmWasmClient) {
+    this._client = client
+  }
+
+  get signer() {
+    return this._signer
+  }
+
+  set signer(signer: OfflineSigner) {
+    this._signer = signer
   }
 
   getControllerContract(contractAddress?: string) {
@@ -40,6 +47,10 @@ export class KompleClient implements KompleClientInterface {
 
   getTokenContract(contractAddress?: string) {
     return new TokenContract(this.client, this.signer, contractAddress)
+  }
+
+  getWhitelistContract(contractAddress?: string) {
+    return new WhitelistContract(this.client, this.signer, contractAddress)
   }
 
   getMintModule(contractAddress?: string) {

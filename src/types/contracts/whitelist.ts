@@ -1,6 +1,6 @@
 import { Coin } from 'cosmwasm'
 
-export type ExecuteMsg =
+export type WhitelistContractExecuteMsg =
   | 'update_start_time'
   | 'update_end_time'
   | 'add_members'
@@ -8,27 +8,33 @@ export type ExecuteMsg =
   | 'update_per_address_limit'
   | 'update_member_limit'
 
-export const ExecuteMsg = {
-  UPDATE_START_TIME: 'update_start_time' as ExecuteMsg,
-  UPDATE_END_TIME: 'update_end_time' as ExecuteMsg,
-  ADD_MEMBERS: 'add_members' as ExecuteMsg,
-  REMOVE_MEMBERS: 'remove_members' as ExecuteMsg,
-  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as ExecuteMsg,
-  UPDATE_MEMBER_LIMIT: 'update_member_limit' as ExecuteMsg
+export const WhitelistContractExecuteMsg = {
+  UPDATE_START_TIME: 'update_start_time' as WhitelistContractExecuteMsg,
+  UPDATE_END_TIME: 'update_end_time' as WhitelistContractExecuteMsg,
+  ADD_MEMBERS: 'add_members' as WhitelistContractExecuteMsg,
+  REMOVE_MEMBERS: 'remove_members' as WhitelistContractExecuteMsg,
+  UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as WhitelistContractExecuteMsg,
+  UPDATE_MEMBER_LIMIT: 'update_member_limit' as WhitelistContractExecuteMsg
 }
 
-export type QueryMsg = 'config' | 'has_started' | 'has_end' | 'is_active' | 'members' | 'has_member'
+export type WhitelistContractQueryMsg =
+  | 'config'
+  | 'has_started'
+  | 'has_end'
+  | 'is_active'
+  | 'members'
+  | 'has_member'
 
-export const QueryMsg = {
-  CONFIG: 'config' as QueryMsg,
-  HAS_STARTED: 'has_started' as QueryMsg,
-  HAS_ENDED: 'has_end' as QueryMsg,
-  IS_ACTIVE: 'is_active' as QueryMsg,
-  MEMBERS: 'members' as QueryMsg,
-  HAS_MEMBER: 'has_member' as QueryMsg
+export const WhitelistContractQueryMsg = {
+  CONFIG: 'config' as WhitelistContractQueryMsg,
+  HAS_STARTED: 'has_started' as WhitelistContractQueryMsg,
+  HAS_ENDED: 'has_end' as WhitelistContractQueryMsg,
+  IS_ACTIVE: 'is_active' as WhitelistContractQueryMsg,
+  MEMBERS: 'members' as WhitelistContractQueryMsg,
+  HAS_MEMBER: 'has_member' as WhitelistContractQueryMsg
 }
 
-export interface InstantiateMsg {
+export interface WhitelistContractInstantiateMsg {
   members: string[]
   start_time: number
   end_time: number
@@ -37,26 +43,26 @@ export interface InstantiateMsg {
   member_limit: number
 }
 
-export interface UpdateStartTimeMsg {
+export interface WhitelistContractUpdateStartTimeMsg {
   timestamp: string
 }
 
-export interface UpdateEndTimeMsg {
+export interface WhitelistContractUpdateEndTimeMsg {
   timestamp: string
 }
 
-export interface AddMembersMsg {
+export interface WhitelistContractAddMembersMsg {
   members: string[]
 }
 
-export interface RemoveMembersMsg {
+export interface WhitelistContractRemoveMembersMsg {
   members: string[]
 }
 
-export interface UpdatePerAddressLimitMsg {
+export interface WhitelistContractUpdatePerAddressLimitMsg {
   limit: number
 }
 
-export interface UpdateMemberLimitMsg {
+export interface WhitelistContractUpdateMemberLimitMsg {
   limit: number
 }

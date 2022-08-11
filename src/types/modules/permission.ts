@@ -1,36 +1,34 @@
 import { Modules, Permissions } from '../shared'
 
-export type ExecuteMsg = 'update_module_permissions' | 'update_operators' | 'check'
+export type PermissionModuleExecuteMsg = 'update_module_permissions' | 'update_operators' | 'check'
 
-export const ExecuteMsg = {
-  UPDATE_MODULE_PERMISSIONS: 'update_module_permissions' as ExecuteMsg,
-  UPDATE_OPERATORS: 'update_operators' as ExecuteMsg,
-  CHECK: 'check' as ExecuteMsg
+export const PermissionModuleExecuteMsg = {
+  UPDATE_MODULE_PERMISSIONS: 'update_module_permissions' as PermissionModuleExecuteMsg,
+  UPDATE_OPERATORS: 'update_operators' as PermissionModuleExecuteMsg,
+  CHECK: 'check' as PermissionModuleExecuteMsg
 }
 
-export type QueryMsg = 'module_permissions' | 'operators'
+export type PermissionModuleQueryMsg = 'module_permissions' | 'operators'
 
-export const QueryMsg = {
-  MODULE_PERMISSIONS: 'module_permissions' as QueryMsg,
-  OPERATORS: 'operators' as QueryMsg
+export const PermissionModuleQueryMsg = {
+  MODULE_PERMISSIONS: 'module_permissions' as PermissionModuleQueryMsg,
+  OPERATORS: 'operators' as PermissionModuleQueryMsg
 }
 
-export interface InstantiateMsg {
+export interface PermissionModuleInstantiateMsg {
   admin: string
 }
 
-export type Listing = 'Fixed' | 'Auction'
-
-export interface UpdateModulePermissionsMsg {
+export interface PermissionModuleUpdateModulePermissionsMsg {
   module: Modules
   permissions: Permissions
 }
 
-export interface UpdateOperatorsMsg {
+export interface PermissionModuleUpdateOperatorsMsg {
   addrs: string[]
 }
 
-export interface CheckMsg {
+export interface PermissionModuleCheckMsg {
   module: Modules
   msg: string
 }

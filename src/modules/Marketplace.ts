@@ -17,11 +17,7 @@ import {
 } from '../types/modules/marketplace'
 
 export class MarketplaceModule extends ContractWrapper {
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    contractAddress?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -30,13 +26,15 @@ export class MarketplaceModule extends ContractWrapper {
     { admin }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(
+    const result = await super.instantiate(
       codeId,
       { admin },
       'Komple Framework Marketplace Module',
       'auto',
       options
     )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async listFixedtoken({

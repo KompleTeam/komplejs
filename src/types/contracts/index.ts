@@ -1,10 +1,6 @@
-export {
-  ExecuteMsg as ControllerExecuteMsg,
-  QueryMsg as ControllerQueryMsg,
-  InstantiateMsg as ControllerInstantiateMsg,
-  InitModuleMsg as ControllerInitModuleMsg,
-  InitMarketplaceModuleMsg as ControllerInitMarketplaceModuleMsg
-} from './controller'
+export * from './controller'
+export * from './token'
+export * from './whitelist'
 
 export type CONTRACTS = 'controller' | 'token' | 'metadata' | 'whitelist'
 

@@ -1,45 +1,49 @@
-export type ExecuteMsg = 'list_fixed_token' | 'delist_fixed_token' | 'update_price' | 'buy'
+export type MarketplaceModuleExecuteMsg =
+  | 'list_fixed_token'
+  | 'delist_fixed_token'
+  | 'update_price'
+  | 'buy'
 
-export const ExecuteMsg = {
-  LIST_FIXED_TOKEN: 'list_fixed_token' as ExecuteMsg,
-  DELIST_FIXED_TOKEN: 'delist_fixed_token' as ExecuteMsg,
-  UPDATE_PRICE: 'update_price' as ExecuteMsg,
-  BUY: 'buy' as ExecuteMsg
+export const MarketplaceModuleExecuteMsg = {
+  LIST_FIXED_TOKEN: 'list_fixed_token' as MarketplaceModuleExecuteMsg,
+  DELIST_FIXED_TOKEN: 'delist_fixed_token' as MarketplaceModuleExecuteMsg,
+  UPDATE_PRICE: 'update_price' as MarketplaceModuleExecuteMsg,
+  BUY: 'buy' as MarketplaceModuleExecuteMsg
 }
 
-export type QueryMsg = 'config' | 'fixed_listing'
+export type MarketplaceModuleQueryMsg = 'config' | 'fixed_listing'
 
-export const QueryMsg = {
-  CONFIG: 'config' as QueryMsg,
-  FIXED_LISTING: 'fixed_listing' as QueryMsg
+export const MarketplaceModuleQueryMsg = {
+  CONFIG: 'config' as MarketplaceModuleQueryMsg,
+  FIXED_LISTING: 'fixed_listing' as MarketplaceModuleQueryMsg
 }
 
-export interface InstantiateMsg {
+export interface MarketplaceModuleInstantiateMsg {
   admin: string
   native_denom: string
 }
 
 export type Listing = 'Fixed' | 'Auction'
 
-export interface ListFixedTokenMsg {
+export interface MarketplaceModuleListFixedTokenMsg {
   collection_id: number
   token_id: number
   price: string
 }
 
-export interface DelistFixedTokenMsg {
+export interface MarketplaceModuleDelistFixedTokenMsg {
   collection_id: number
   token_id: number
 }
 
-export interface UpdatePriceMsg {
+export interface MarketplaceModuleUpdatePriceMsg {
   listing_type: Listing
   collection_id: number
   token_id: number
   price: string
 }
 
-export interface BuyMsg {
+export interface MarketplaceModuleBuyMsg {
   listing_type: Listing
   collection_id: number
   token_id: number

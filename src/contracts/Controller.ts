@@ -16,11 +16,7 @@ import {
 } from '../types/contracts/controller'
 
 export class ControllerContract extends ContractWrapper {
-  constructor(
-    client: SigningCosmWasmClient | null,
-    signer: OfflineSigner | null,
-    contractAddress?: string
-  ) {
+  constructor(client: SigningCosmWasmClient, signer: OfflineSigner, contractAddress?: string) {
     super(client, signer, contractAddress)
   }
 
@@ -29,13 +25,15 @@ export class ControllerContract extends ContractWrapper {
     { name, description, image, external_link }: InstantiateMsg,
     options?: InstantiateOptions
   ): Promise<InstantiateResult> {
-    return super.instantiate(
+    const result = await super.instantiate(
       codeId,
       { name, description, image, external_link },
       'Komple Framework Controller Contract',
       'auto',
       options
     )
+    this.updateAddress(result.contractAddress)
+    return result
   }
 
   async initMintModule({ code_id }: InitModuleMsg): Promise<ExecuteResult> {
