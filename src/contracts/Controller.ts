@@ -71,10 +71,6 @@ export class ControllerContract extends ContractWrapper {
     return super.query({ [`${ControllerContractQueryMsg.CONFIG}`]: {} })
   }
 
-  async getControllerInfo(): Promise<any> {
-    return super.query({ [`${ControllerContractQueryMsg.CONTROLLER_INFO}`]: {} })
-  }
-
   async getModuleAddress(module: MODULES): Promise<any> {
     return super.query({ [`${ControllerContractQueryMsg.MODULE_ADDRESS}`]: module })
   }

@@ -15,7 +15,6 @@ export type ControllerContractQueryMsg = 'config' | 'controller_info' | 'module_
 
 export const ControllerContractQueryMsg = {
   CONFIG: 'config' as ControllerContractQueryMsg,
-  CONTROLLER_INFO: 'controller_info' as ControllerContractQueryMsg,
   MODULE_ADDRESS: 'module_address' as ControllerContractQueryMsg
 }
 
