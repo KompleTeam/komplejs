@@ -44,24 +44,14 @@ export class MintModule extends ContractWrapper {
 
   async createCollection({
     code_id,
-    collection_info,
-    token_info,
-    per_address_limit,
-    start_time,
-    unit_price,
-    native_denom,
+    token_instantiate_msg,
     linked_collections
   }: MintModuleCreateCollectionMsg): Promise<ExecuteResult> {
     return super.execute(
       {
         [`${MintModuleExecuteMsg.CREATE_COLLECTION}`]: {
           code_id,
-          collection_info,
-          token_info,
-          per_address_limit,
-          start_time,
-          unit_price,
-          native_denom,
+          token_instantiate_msg,
           linked_collections
         }
       },

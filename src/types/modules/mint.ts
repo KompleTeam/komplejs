@@ -1,5 +1,4 @@
-import { Coin } from 'cosmwasm'
-import { CollectionInfo, TokenInfo } from '../shared'
+import { TokenContractInstantiateMsg } from '../contracts'
 
 export type MintModuleExecuteMsg =
   | 'create_collection'
@@ -43,12 +42,7 @@ export interface MintModuleInstantiateMsg {
 
 export interface MintModuleCreateCollectionMsg {
   code_id: number
-  collection_info: CollectionInfo
-  token_info: TokenInfo
-  per_address_limit?: number
-  start_time?: string
-  unit_price?: Coin
-  native_denom: string
+  token_instantiate_msg: TokenContractInstantiateMsg
   linked_collections?: number[]
 }
 
