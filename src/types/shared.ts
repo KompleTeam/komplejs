@@ -1,19 +1,24 @@
-export type Modules = 'Mint' | 'Merge' | 'Marketplace' | 'Permission' | 'Swap'
+export type Modules =
+  | 'mint_module'
+  | 'merge_module'
+  | 'marketplace_module'
+  | 'permission_module'
+  | 'swap_module'
 
 export type Collections =
-  | 'Normal'
+  | 'normal'
   // | 'Multiple'
-  | 'Linked'
+  | 'linked'
 // | 'OneToOne'
 
-export type Permissions = 'Ownership' | 'Attribute'
+export type Permissions = 'ownership' | 'attribute'
 
-export type Metadata = 'OneToOne' | 'Static' | 'Dynamic'
+export type Metadata = 'one_to_one' | 'static' | 'dynamic'
 
 export interface CollectionInfo {
   collection_type: Collections
   name: string
-  descrtiption: string
+  description: string
   image: string
   external_link?: string
 }
