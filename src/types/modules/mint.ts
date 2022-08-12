@@ -46,7 +46,7 @@ export interface MintModuleCreateCollectionMsg {
   linked_collections?: number[]
 }
 
-export interface MintModuleUpdatePublicCollectionCreation {
+export interface MintModuleUpdatePublicCollectionCreationMsg {
   public_collection_creation: boolean
 }
 

@@ -94,6 +94,7 @@ export interface TokenContractInstantiateMsg {
   max_token_limit?: number
   unit_price?: Coin
   native_denom: String
+  royalty_share?: string
 }
 
 export interface TokenContractTransferNftMsg {

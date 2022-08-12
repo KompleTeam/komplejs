@@ -9,7 +9,7 @@ import { ContractWrapper } from '../ContractWrapper'
 import {
   MintModuleInstantiateMsg,
   MintModuleCreateCollectionMsg,
-  MintModuleUpdatePublicCollectionCreation,
+  MintModuleUpdatePublicCollectionCreationMsg,
   MintModuleUpdateMintLockMsg,
   MintModuleMintMsg,
   MintModuleMintToMsg,
@@ -61,7 +61,7 @@ export class MintModule extends ContractWrapper {
 
   async updatePublicCollectionCreation({
     public_collection_creation
-  }: MintModuleUpdatePublicCollectionCreation): Promise<ExecuteResult> {
+  }: MintModuleUpdatePublicCollectionCreationMsg): Promise<ExecuteResult> {
     return super.execute(
       {
         [`${MintModuleExecuteMsg.UPDATE_PUBLIC_COLLECTION_CREATION}`]: {
