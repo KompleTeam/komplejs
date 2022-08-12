@@ -1,5 +1,6 @@
 import { Coin } from 'cosmwasm'
 import { CollectionInfo, Expiration, Locks, Metadata, TokenInfo } from '../shared'
+import { WhitelistContractInstantiateMsg } from './whitelist'
 
 export type TokenContractExecuteMsg =
   | 'transfer_nft'
@@ -181,5 +182,5 @@ export interface TokenContractInitMetadataContractMsg {
 
 export interface TokenContractInitWhitelistContractMsg {
   code_id: number
-  instantiate_msg: any
+  instantiate_msg: WhitelistContractInstantiateMsg
 }
