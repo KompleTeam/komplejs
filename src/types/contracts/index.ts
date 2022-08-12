@@ -1,6 +1,7 @@
 export * from './controller'
 export * from './token'
 export * from './whitelist'
+export * from './metadata'
 
 export type CONTRACTS = 'controller' | 'token' | 'metadata' | 'whitelist'
 

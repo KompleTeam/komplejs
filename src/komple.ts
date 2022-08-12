@@ -1,5 +1,5 @@
 import { SigningCosmWasmClient, OfflineSigner } from 'cosmwasm'
-import { ControllerContract, TokenContract, WhitelistContract } from './contracts'
+import { ControllerContract, TokenContract, WhitelistContract, MetadataContract } from './contracts'
 import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './modules'
 
 interface KompleClientInterface {
@@ -9,6 +9,7 @@ interface KompleClientInterface {
   getControllerContract: (contractAddress?: string) => ControllerContract
   getTokenContract: (contractAddress?: string) => TokenContract
   getWhitelistContract: (contractAddress?: string) => WhitelistContract
+  getMetadataContract: (contractAddress?: string) => MetadataContract
 
   getMintModule: (contractAddress?: string) => MintModule
   getMergeModule: (contractAddress?: string) => MergeModule
@@ -35,6 +36,10 @@ export class KompleClient implements KompleClientInterface {
 
   getWhitelistContract(contractAddress?: string) {
     return new WhitelistContract(this.client, this.signer, contractAddress)
+  }
+
+  getMetadataContract(contractAddress?: string) {
+    return new MetadataContract(this.client, this.signer, contractAddress)
   }
 
   getMintModule(contractAddress?: string) {
