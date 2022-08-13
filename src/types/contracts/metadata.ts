@@ -38,11 +38,11 @@ export interface MetadataContractInstantiateMsg {
 }
 
 export interface MetaInfo {
-  image?: null
-  external_url?: null
-  description?: null
-  animation_url?: null
-  youtube_url?: null
+  image?: string
+  external_url?: string
+  description?: string
+  animation_url?: string
+  youtube_url?: string
 }
 
 export interface Trait {
