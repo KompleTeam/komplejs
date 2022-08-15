@@ -3,6 +3,7 @@ import { Metadata } from '../shared'
 export type MetadataContractExecuteMsg =
   | 'add_metadata'
   | 'link_metadata'
+  | 'unlink_metadata'
   | 'update_meta_info'
   | 'add_attribute'
   | 'update_attribute'
@@ -11,6 +12,7 @@ export type MetadataContractExecuteMsg =
 export const MetadataContractExecuteMsg = {
   ADD_METADATA: 'add_metadata' as MetadataContractExecuteMsg,
   LINK_METADATA: 'link_metadata' as MetadataContractExecuteMsg,
+  UNLINK_METADATA: 'unlink_metadata' as MetadataContractExecuteMsg,
   UPDATE_META_INFO: 'update_meta_info' as MetadataContractExecuteMsg,
   ADD_ATTRIBUTE: 'add_attribute' as MetadataContractExecuteMsg,
   UPDATE_ATTRIBUTE: 'update_attribute' as MetadataContractExecuteMsg,
@@ -58,6 +60,10 @@ export interface MetadataContractAddMetadataMsg {
 export interface MetadataContractLinkMetadataMsg {
   token_id: number
   metadata_id?: number
+}
+
+export interface MetadataContractUnlinkMetadataMsg {
+  token_id: number
 }
 
 export interface MetadataContractUpdateMetaInfoMsg {

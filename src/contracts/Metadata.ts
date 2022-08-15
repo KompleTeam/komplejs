@@ -12,6 +12,7 @@ import {
   MetadataContractAddMetadataMsg,
   MetadataContractInstantiateMsg,
   MetadataContractLinkMetadataMsg,
+  MetadataContractUnlinkMetadataMsg,
   MetadataContractUpdateMetaInfoMsg,
   MetadataContractAddAttributeMsg,
   MetadataContractUpdateAttributeMsg,
@@ -56,6 +57,13 @@ export class MetadataContract extends ContractWrapper {
   }: MetadataContractLinkMetadataMsg): Promise<ExecuteResult> {
     return super.execute(
       { [`${MetadataContractExecuteMsg.LINK_METADATA}`]: { token_id, metadata_id } },
+      'auto'
+    )
+  }
+
+  async unlinkMetadata({ token_id }: MetadataContractUnlinkMetadataMsg): Promise<ExecuteResult> {
+    return super.execute(
+      { [`${MetadataContractExecuteMsg.UNLINK_METADATA}`]: { token_id } },
       'auto'
     )
   }
