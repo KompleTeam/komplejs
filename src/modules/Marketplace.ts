@@ -1,4 +1,5 @@
 import {
+  Coin,
   ExecuteResult,
   InstantiateOptions,
   InstantiateResult,
@@ -77,16 +78,16 @@ export class MarketplaceModule extends ContractWrapper {
     )
   }
 
-  async buy({
-    listing_type,
-    collection_id,
-    token_id
-  }: MarketplaceModuleBuyMsg): Promise<ExecuteResult> {
+  async buy(
+    { listing_type, collection_id, token_id }: MarketplaceModuleBuyMsg,
+    funds: Coin[]
+  ): Promise<ExecuteResult> {
     return super.execute(
       {
         [`${MarketplaceModuleExecuteMsg.BUY}`]: { listing_type, collection_id, token_id }
       },
-      'auto'
+      'auto',
+      funds
     )
   }
 
@@ -94,7 +95,19 @@ export class MarketplaceModule extends ContractWrapper {
     return super.query({ [`${MarketplaceModuleQueryMsg.CONFIG}`]: {} })
   }
 
-  async getFixedListing(): Promise<any> {
-    return super.query({ [`${MarketplaceModuleQueryMsg.FIXED_LISTING}`]: {} })
+  async getFixedListing(collection_id: number, token_id: number): Promise<any> {
+    return super.query({
+      [`${MarketplaceModuleQueryMsg.FIXED_LISTING}`]: { collection_id, token_id }
+    })
+  }
+
+  async getFixedListings(
+    collection_id: number,
+    start_after?: number,
+    limit?: number
+  ): Promise<any> {
+    return super.query({
+      [`${MarketplaceModuleQueryMsg.FIXED_LISTINGS}`]: { collection_id, start_after, limit }
+    })
   }
 }

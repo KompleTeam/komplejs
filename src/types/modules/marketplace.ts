@@ -11,11 +11,12 @@ export const MarketplaceModuleExecuteMsg = {
   BUY: 'buy' as MarketplaceModuleExecuteMsg
 }
 
-export type MarketplaceModuleQueryMsg = 'config' | 'fixed_listing'
+export type MarketplaceModuleQueryMsg = 'config' | 'fixed_listing' | 'fixed_listings'
 
 export const MarketplaceModuleQueryMsg = {
   CONFIG: 'config' as MarketplaceModuleQueryMsg,
-  FIXED_LISTING: 'fixed_listing' as MarketplaceModuleQueryMsg
+  FIXED_LISTING: 'fixed_listing' as MarketplaceModuleQueryMsg,
+  FIXED_LISTINGS: 'fixed_listings' as MarketplaceModuleQueryMsg
 }
 
 export interface MarketplaceModuleInstantiateMsg {
@@ -23,7 +24,7 @@ export interface MarketplaceModuleInstantiateMsg {
   native_denom: string
 }
 
-export type Listing = 'Fixed' | 'Auction'
+export type Listing = 'fixed' | 'auction'
 
 export interface MarketplaceModuleListFixedTokenMsg {
   collection_id: number
