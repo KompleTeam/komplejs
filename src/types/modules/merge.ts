@@ -18,6 +18,17 @@ export const MergeModuleQueryMsg = {
   OPERATORS: 'operators' as MergeModuleQueryMsg
 }
 
+export interface MergeModuleBinaryMergeBurnMsg {
+  collection_id: number
+  token_id: number
+}
+
+export interface MergeModuleBinaryMergeMsg {
+  mint: number[]
+  burn: MergeModuleBinaryMergeBurnMsg[]
+  metadata_ids?: number[]
+}
+
 export interface MergeModuleInstantiateMsg {
   admin: string
 }
@@ -27,12 +38,12 @@ export interface MergeModuleUpdateMergeLockMsg {
 }
 
 export interface MergeModuleMergeMsg {
-  msg: string
+  msg: MergeModuleBinaryMergeMsg
 }
 
 export interface MergeModulePermissionMergeMsg {
-  permission_merge: string
-  merge_msg: string
+  permission_msg: string
+  merge_msg: MergeModuleBinaryMergeMsg
 }
 
 export interface MergeModuleUpdateOperatorsMsg {

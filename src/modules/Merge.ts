@@ -3,7 +3,9 @@ import {
   InstantiateOptions,
   InstantiateResult,
   OfflineSigner,
-  SigningCosmWasmClient
+  SigningCosmWasmClient,
+  toBase64,
+  toUtf8
 } from 'cosmwasm'
 import { ContractWrapper } from '../ContractWrapper'
 import {
@@ -42,21 +44,29 @@ export class MergeModule extends ContractWrapper {
   }
 
   async merge({ msg }: MergeModuleMergeMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${MergeModuleExecuteMsg.MERGE}`]: { msg } }, 'auto')
-  }
-
-  async permissionMerge({
-    permission_merge,
-    merge_msg
-  }: MergeModulePermissionMergeMsg): Promise<ExecuteResult> {
     return super.execute(
-      { [`${MergeModuleExecuteMsg.PERMISSION_MERGE}`]: { permission_merge, merge_msg } },
+      { [`${MergeModuleExecuteMsg.MERGE}`]: { msg: toBase64(toUtf8(JSON.stringify(msg))) } },
       'auto'
     )
   }
 
-  async updateOperators(msg: MergeModuleUpdateOperatorsMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${MergeModuleExecuteMsg.UPDATE_OPERATORS}`]: { msg } }, 'auto')
+  async permissionMerge({
+    permission_msg,
+    merge_msg
+  }: MergeModulePermissionMergeMsg): Promise<ExecuteResult> {
+    return super.execute(
+      {
+        [`${MergeModuleExecuteMsg.PERMISSION_MERGE}`]: {
+          permission_msg: toBase64(toUtf8(JSON.stringify(permission_msg))),
+          merge_msg: toBase64(toUtf8(JSON.stringify(merge_msg)))
+        }
+      },
+      'auto'
+    )
+  }
+
+  async updateOperators({ addrs }: MergeModuleUpdateOperatorsMsg): Promise<ExecuteResult> {
+    return super.execute({ [`${MergeModuleExecuteMsg.UPDATE_OPERATORS}`]: { addrs } }, 'auto')
   }
 
   async getConfig(): Promise<any> {
