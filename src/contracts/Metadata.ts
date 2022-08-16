@@ -124,9 +124,9 @@ export class MetadataContract extends ContractWrapper {
     return super.query({ [`${MetadataContractQueryMsg.RAW_METADATAS}`]: { start_after, limit } })
   }
 
-  async getMetadatas(metadata_type: Metadata, start_after?: number, limit?: number): Promise<any> {
+  async getMetadatas(start_after?: number, limit?: number): Promise<any> {
     return super.query({
-      [`${MetadataContractQueryMsg.METADATAS}`]: { metadata_type, start_after, limit }
+      [`${MetadataContractQueryMsg.METADATAS}`]: { start_after, limit }
     })
   }
 }
