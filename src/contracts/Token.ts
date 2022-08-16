@@ -23,8 +23,6 @@ import {
   TokenContractUpdateTokenLocksMsg,
   TokenContractUpdatePerAddressLimitMsg,
   TokenContractUpdateStartTimeMsg,
-  TokenContractUpdateWhitelistMsg,
-  TokenContractUpdateMetadataMsg,
   TokenContractInitMetadataContractMsg,
   TokenContractInitWhitelistContractMsg,
   TokenContractExecuteMsg,
@@ -159,18 +157,6 @@ export class TokenContract extends ContractWrapper {
       { [`${TokenContractExecuteMsg.UPDATE_START_TIME}`]: { start_time } },
       'auto'
     )
-  }
-
-  async updateWhitelistContract({
-    whitelist
-  }: TokenContractUpdateWhitelistMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${TokenContractExecuteMsg.UPDATE_WHITELIST}`]: { whitelist } }, 'auto')
-  }
-
-  async updateMetadataContract({
-    metadata
-  }: TokenContractUpdateMetadataMsg): Promise<ExecuteResult> {
-    return super.execute({ [`${TokenContractExecuteMsg.UPDATE_METADATA}`]: { metadata } }, 'auto')
   }
 
   async initMetadataContract({

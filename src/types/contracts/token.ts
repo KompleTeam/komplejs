@@ -18,8 +18,6 @@ export type TokenContractExecuteMsg =
   | 'update_token_locks'
   | 'update_per_address_limit'
   | 'update_start_time'
-  | 'update_whitelist'
-  | 'update_metadata'
   | 'init_metadata_contract'
   | 'init_whitelist_contract'
 
@@ -39,8 +37,6 @@ export const TokenContractExecuteMsg = {
   UPDATE_TOKEN_LOCKS: 'update_token_locks' as TokenContractExecuteMsg,
   UPDATE_PER_ADDRESS_LIMIT: 'update_per_address_limit' as TokenContractExecuteMsg,
   UPDATE_START_TIME: 'update_start_time' as TokenContractExecuteMsg,
-  UPDATE_WHITELIST: 'update_whitelist' as TokenContractExecuteMsg,
-  UPDATE_METADATA: 'update_metadata' as TokenContractExecuteMsg,
   INIT_METADATA_CONTRACT: 'init_metadata_contract' as TokenContractExecuteMsg,
   INIT_WHITELIST_CONTRACT: 'init_whitelist_contract' as TokenContractExecuteMsg
 }
@@ -165,14 +161,6 @@ export interface TokenContractUpdatePerAddressLimitMsg {
 
 export interface TokenContractUpdateStartTimeMsg {
   start_time?: string
-}
-
-export interface TokenContractUpdateWhitelistMsg {
-  whitelist?: string
-}
-
-export interface TokenContractUpdateMetadataMsg {
-  metadata?: string
 }
 
 export interface TokenContractInitMetadataContractMsg {
