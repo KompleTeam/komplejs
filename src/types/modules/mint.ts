@@ -27,13 +27,15 @@ export type MintModuleQueryMsg =
   | 'operators'
   | 'collection_types'
   | 'linked_collections'
+  | 'collections'
 
 export const MintModuleQueryMsg = {
   CONFIG: 'config' as MintModuleQueryMsg,
   COLLECTION_ADDRESS: 'collection_address' as MintModuleQueryMsg,
   OPERATORS: 'operators' as MintModuleQueryMsg,
   COLLECTION_TYPES: 'collection_types' as MintModuleQueryMsg,
-  LINKED_COLLECTIONS: 'linked_collections' as MintModuleQueryMsg
+  LINKED_COLLECTIONS: 'linked_collections' as MintModuleQueryMsg,
+  COLLECTIONS: 'collections' as MintModuleQueryMsg
 }
 
 export interface MintModuleInstantiateMsg {

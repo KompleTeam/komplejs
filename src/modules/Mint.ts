@@ -134,4 +134,10 @@ export class MintModule extends ContractWrapper {
       [`${MintModuleQueryMsg.LINKED_COLLECTIONS}`]: { collection_id: collectionId }
     })
   }
+
+  async getCollections(start_after?: number, limit?: number): Promise<any> {
+    return super.query({
+      [`${MintModuleQueryMsg.COLLECTIONS}`]: { start_after, limit }
+    })
+  }
 }
