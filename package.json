@@ -1,10 +1,10 @@
 {
-  "name": "komple-js",
+  "name": "komplejs",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/komple-js.umd.js",
-  "module": "dist/komple-js.es5.js",
+  "main": "dist/komplejs.umd.js",
+  "module": "dist/komplejs.es5.js",
   "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
