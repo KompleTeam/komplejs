@@ -2,8 +2,26 @@
   "name": "komplejs",
   "version": "0.1.0",
   "description": "Javascript library made for Komple Framework.",
-  "main": "index.ts",
+  "main": "./lib/cjs/index.js",
   "repository": "https://github.com/KompleTeam/komplejs",
   "author": "findolor <16416963+findolor@users.noreply.github.com>",
-  "private": true
+  "private": true,
+
+  "types": "./lib/cjs/types/index.d.ts",
+  "files": ["lib/**/*"],
+
+  "scripts": {
+    "clean": "rm -rf ./lib",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p ./configs/tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+    "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
+    "prepack": "npm run build"
+  },
+
+
+  "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.29.3",
+    "@cosmjs/proto-signing": "^0.29.3",
+    "@cosmjs/stargate": "^0.29.3"
+  }
 }
