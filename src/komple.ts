@@ -1,4 +1,4 @@
-import { contracts } from './framework'
+import { contracts } from './ts-files'
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
 import { OfflineSigner } from '@cosmjs/proto-signing'
 
