@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Binary, MergeMsg, MergeBurnMsg, QueryMsg, MigrateMsg, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForArrayOfString } from "./MergeModule.types";
+import { Binary, InstantiateMsg, ExecuteMsg, MergeMsg, MergeBurnMsg, QueryMsg, MigrateMsg, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForArrayOfString } from "./MergeModule.types";
 export interface MergeModuleReadOnlyInterface {
   contractAddress: string;
   config: () => Promise<ResponseWrapperForConfig>;
@@ -59,6 +59,7 @@ export interface MergeModuleInterface extends MergeModuleReadOnlyInterface {
   }: {
     addrs: string[];
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  lockExecute: (fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class MergeModuleClient extends MergeModuleQueryClient implements MergeModuleInterface {
   client: SigningCosmWasmClient;
@@ -74,6 +75,7 @@ export class MergeModuleClient extends MergeModuleQueryClient implements MergeMo
     this.merge = this.merge.bind(this);
     this.permissionMerge = this.permissionMerge.bind(this);
     this.updateOperators = this.updateOperators.bind(this);
+    this.lockExecute = this.lockExecute.bind(this);
   }
 
   updateMergeLock = async ({
@@ -121,6 +123,11 @@ export class MergeModuleClient extends MergeModuleQueryClient implements MergeMo
       update_operators: {
         addrs
       }
+    }, fee, memo, funds);
+  };
+  lockExecute = async (fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      lock_execute: {}
     }, fee, memo, funds);
   };
 }

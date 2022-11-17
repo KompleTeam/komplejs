@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Uint128, Listing, QueryMsg, MigrateMsg, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForFixedListing, FixedListing, ResponseWrapperForArrayOfFixedListing, ResponseWrapperForArrayOfString } from "./MarketplaceModule.types";
+import { Binary, InstantiateMsg, ExecuteMsg, Uint128, Listing, Cw20ReceiveMsg, QueryMsg, MigrateMsg, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForFixedListing, FixedListing, ResponseWrapperForArrayOfFixedListing, ResponseWrapperForArrayOfString } from "./MarketplaceModule.types";
 export interface MarketplaceModuleReadOnlyInterface {
   contractAddress: string;
   config: () => Promise<ResponseWrapperForConfig>;
@@ -86,6 +86,11 @@ export class MarketplaceModuleQueryClient implements MarketplaceModuleReadOnlyIn
 export interface MarketplaceModuleInterface extends MarketplaceModuleReadOnlyInterface {
   contractAddress: string;
   sender: string;
+  updateBuyLock: ({
+    lock
+  }: {
+    lock: boolean;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   listFixedToken: ({
     collectionId,
     price,
@@ -122,10 +127,31 @@ export interface MarketplaceModuleInterface extends MarketplaceModuleReadOnlyInt
     listingType: Listing;
     tokenId: number;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  permissionBuy: ({
+    buyer,
+    collectionId,
+    listingType,
+    tokenId
+  }: {
+    buyer: string;
+    collectionId: number;
+    listingType: Listing;
+    tokenId: number;
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   updateOperators: ({
     addrs
   }: {
     addrs: string[];
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  lockExecute: (fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  receive: ({
+    amount,
+    msg,
+    sender
+  }: {
+    amount: Uint128;
+    msg: Binary;
+    sender: string;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class MarketplaceModuleClient extends MarketplaceModuleQueryClient implements MarketplaceModuleInterface {
@@ -138,13 +164,28 @@ export class MarketplaceModuleClient extends MarketplaceModuleQueryClient implem
     this.client = client;
     this.sender = sender;
     this.contractAddress = contractAddress;
+    this.updateBuyLock = this.updateBuyLock.bind(this);
     this.listFixedToken = this.listFixedToken.bind(this);
     this.delistFixedToken = this.delistFixedToken.bind(this);
     this.updatePrice = this.updatePrice.bind(this);
     this.buy = this.buy.bind(this);
+    this.permissionBuy = this.permissionBuy.bind(this);
     this.updateOperators = this.updateOperators.bind(this);
+    this.lockExecute = this.lockExecute.bind(this);
+    this.receive = this.receive.bind(this);
   }
 
+  updateBuyLock = async ({
+    lock
+  }: {
+    lock: boolean;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      update_buy_lock: {
+        lock
+      }
+    }, fee, memo, funds);
+  };
   listFixedToken = async ({
     collectionId,
     price,
@@ -213,6 +254,26 @@ export class MarketplaceModuleClient extends MarketplaceModuleQueryClient implem
       }
     }, fee, memo, funds);
   };
+  permissionBuy = async ({
+    buyer,
+    collectionId,
+    listingType,
+    tokenId
+  }: {
+    buyer: string;
+    collectionId: number;
+    listingType: Listing;
+    tokenId: number;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      permission_buy: {
+        buyer,
+        collection_id: collectionId,
+        listing_type: listingType,
+        token_id: tokenId
+      }
+    }, fee, memo, funds);
+  };
   updateOperators = async ({
     addrs
   }: {
@@ -221,6 +282,28 @@ export class MarketplaceModuleClient extends MarketplaceModuleQueryClient implem
     return await this.client.execute(this.sender, this.contractAddress, {
       update_operators: {
         addrs
+      }
+    }, fee, memo, funds);
+  };
+  lockExecute = async (fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      lock_execute: {}
+    }, fee, memo, funds);
+  };
+  receive = async ({
+    amount,
+    msg,
+    sender
+  }: {
+    amount: Uint128;
+    msg: Binary;
+    sender: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      receive: {
+        amount,
+        msg,
+        sender
       }
     }, fee, memo, funds);
   };

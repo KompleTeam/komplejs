@@ -6,11 +6,15 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Timestamp, Uint64, Collections, Metadata, Binary, CollectionConfig, CollectionInfo, MetadataInfo, TokenInfo, MintMsg, QueryMsg, MigrateMsg, ResponseWrapperForString, ResponseWrapperForCollectionInfo, ResponseWrapperForArrayOfCollectionsResponse, CollectionsResponse, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForArrayOfUint32, ResponseWrapperForArrayOfString } from "./MintModule.types";
+import { Binary, InstantiateMsg, ExecuteMsg, Timestamp, Uint64, Collections, Metadata, Uint128, CollectionConfig, CollectionInfo, CollectionFundInfo, MetadataInfo, TokenInfo, MintMsg, Cw20ReceiveMsg, QueryMsg, MigrateMsg, ResponseWrapperForString, ResponseWrapperForCollectionInfo, ResponseWrapperForArrayOfCollectionsResponse, CollectionsResponse, Addr, ResponseWrapperForConfig, Config, ResponseWrapperForArrayOfString, ResponseWrapperForArrayOfUint32, ResponseWrapperForBoolean } from "./MintModule.types";
 export interface MintModuleReadOnlyInterface {
   contractAddress: string;
   config: () => Promise<ResponseWrapperForConfig>;
-  collectionAddress: () => Promise<ResponseWrapperForString>;
+  collectionAddress: ({
+    collectionId
+  }: {
+    collectionId: number;
+  }) => Promise<ResponseWrapperForString>;
   collectionInfo: ({
     collectionId
   }: {
@@ -31,6 +35,12 @@ export interface MintModuleReadOnlyInterface {
     limit?: number;
     startAfter?: number;
   }) => Promise<ResponseWrapperForArrayOfCollectionsResponse>;
+  creators: () => Promise<ResponseWrapperForArrayOfString>;
+  mintLock: ({
+    collectionId
+  }: {
+    collectionId: number;
+  }) => Promise<ResponseWrapperForBoolean>;
 }
 export class MintModuleQueryClient implements MintModuleReadOnlyInterface {
   client: CosmWasmClient;
@@ -45,6 +55,8 @@ export class MintModuleQueryClient implements MintModuleReadOnlyInterface {
     this.operators = this.operators.bind(this);
     this.linkedCollections = this.linkedCollections.bind(this);
     this.collections = this.collections.bind(this);
+    this.creators = this.creators.bind(this);
+    this.mintLock = this.mintLock.bind(this);
   }
 
   config = async (): Promise<ResponseWrapperForConfig> => {
@@ -52,9 +64,15 @@ export class MintModuleQueryClient implements MintModuleReadOnlyInterface {
       config: {}
     });
   };
-  collectionAddress = async (): Promise<ResponseWrapperForString> => {
+  collectionAddress = async ({
+    collectionId
+  }: {
+    collectionId: number;
+  }): Promise<ResponseWrapperForString> => {
     return this.client.queryContractSmart(this.contractAddress, {
-      collection_address: {}
+      collection_address: {
+        collection_id: collectionId
+      }
     });
   };
   collectionInfo = async ({
@@ -101,6 +119,22 @@ export class MintModuleQueryClient implements MintModuleReadOnlyInterface {
       }
     });
   };
+  creators = async (): Promise<ResponseWrapperForArrayOfString> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      creators: {}
+    });
+  };
+  mintLock = async ({
+    collectionId
+  }: {
+    collectionId: number;
+  }): Promise<ResponseWrapperForBoolean> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      mint_lock: {
+        collection_id: collectionId
+      }
+    });
+  };
 }
 export interface MintModuleInterface extends MintModuleReadOnlyInterface {
   contractAddress: string;
@@ -109,6 +143,7 @@ export interface MintModuleInterface extends MintModuleReadOnlyInterface {
     codeId,
     collectionConfig,
     collectionInfo,
+    fundInfo,
     linkedCollections,
     metadataInfo,
     tokenInfo
@@ -116,6 +151,7 @@ export interface MintModuleInterface extends MintModuleReadOnlyInterface {
     codeId: number;
     collectionConfig: CollectionConfig;
     collectionInfo: CollectionInfo;
+    fundInfo: CollectionFundInfo;
     linkedCollections?: number[];
     metadataInfo: MetadataInfo;
     tokenInfo: TokenInfo;
@@ -125,9 +161,11 @@ export interface MintModuleInterface extends MintModuleReadOnlyInterface {
   }: {
     publicCollectionCreation: boolean;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  updateMintLock: ({
+  updateCollectionMintLock: ({
+    collectionId,
     lock
   }: {
+    collectionId: number;
     lock: boolean;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   mint: ({
@@ -165,15 +203,27 @@ export interface MintModuleInterface extends MintModuleReadOnlyInterface {
     collectionId: number;
     linkedCollections: number[];
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  whitelistCollection: ({
-    collectionId
+  updateCollectionStatus: ({
+    collectionId,
+    isBlacklist
   }: {
     collectionId: number;
+    isBlacklist: boolean;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  blacklistCollection: ({
-    collectionId
+  lockExecute: (fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  updateCreators: ({
+    addrs
   }: {
-    collectionId: number;
+    addrs: string[];
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  receive: ({
+    amount,
+    msg,
+    sender
+  }: {
+    amount: Uint128;
+    msg: Binary;
+    sender: string;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class MintModuleClient extends MintModuleQueryClient implements MintModuleInterface {
@@ -188,20 +238,23 @@ export class MintModuleClient extends MintModuleQueryClient implements MintModul
     this.contractAddress = contractAddress;
     this.createCollection = this.createCollection.bind(this);
     this.updatePublicCollectionCreation = this.updatePublicCollectionCreation.bind(this);
-    this.updateMintLock = this.updateMintLock.bind(this);
+    this.updateCollectionMintLock = this.updateCollectionMintLock.bind(this);
     this.mint = this.mint.bind(this);
     this.adminMint = this.adminMint.bind(this);
     this.permissionMint = this.permissionMint.bind(this);
     this.updateOperators = this.updateOperators.bind(this);
     this.updateLinkedCollections = this.updateLinkedCollections.bind(this);
-    this.whitelistCollection = this.whitelistCollection.bind(this);
-    this.blacklistCollection = this.blacklistCollection.bind(this);
+    this.updateCollectionStatus = this.updateCollectionStatus.bind(this);
+    this.lockExecute = this.lockExecute.bind(this);
+    this.updateCreators = this.updateCreators.bind(this);
+    this.receive = this.receive.bind(this);
   }
 
   createCollection = async ({
     codeId,
     collectionConfig,
     collectionInfo,
+    fundInfo,
     linkedCollections,
     metadataInfo,
     tokenInfo
@@ -209,6 +262,7 @@ export class MintModuleClient extends MintModuleQueryClient implements MintModul
     codeId: number;
     collectionConfig: CollectionConfig;
     collectionInfo: CollectionInfo;
+    fundInfo: CollectionFundInfo;
     linkedCollections?: number[];
     metadataInfo: MetadataInfo;
     tokenInfo: TokenInfo;
@@ -218,6 +272,7 @@ export class MintModuleClient extends MintModuleQueryClient implements MintModul
         code_id: codeId,
         collection_config: collectionConfig,
         collection_info: collectionInfo,
+        fund_info: fundInfo,
         linked_collections: linkedCollections,
         metadata_info: metadataInfo,
         token_info: tokenInfo
@@ -235,13 +290,16 @@ export class MintModuleClient extends MintModuleQueryClient implements MintModul
       }
     }, fee, memo, funds);
   };
-  updateMintLock = async ({
+  updateCollectionMintLock = async ({
+    collectionId,
     lock
   }: {
+    collectionId: number;
     lock: boolean;
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
-      update_mint_lock: {
+      update_collection_mint_lock: {
+        collection_id: collectionId,
         lock
       }
     }, fee, memo, funds);
@@ -316,25 +374,50 @@ export class MintModuleClient extends MintModuleQueryClient implements MintModul
       }
     }, fee, memo, funds);
   };
-  whitelistCollection = async ({
-    collectionId
+  updateCollectionStatus = async ({
+    collectionId,
+    isBlacklist
   }: {
     collectionId: number;
+    isBlacklist: boolean;
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
-      whitelist_collection: {
-        collection_id: collectionId
+      update_collection_status: {
+        collection_id: collectionId,
+        is_blacklist: isBlacklist
       }
     }, fee, memo, funds);
   };
-  blacklistCollection = async ({
-    collectionId
+  lockExecute = async (fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      lock_execute: {}
+    }, fee, memo, funds);
+  };
+  updateCreators = async ({
+    addrs
   }: {
-    collectionId: number;
+    addrs: string[];
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
-      blacklist_collection: {
-        collection_id: collectionId
+      update_creators: {
+        addrs
+      }
+    }, fee, memo, funds);
+  };
+  receive = async ({
+    amount,
+    msg,
+    sender
+  }: {
+    amount: Uint128;
+    msg: Binary;
+    sender: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      receive: {
+        amount,
+        msg,
+        sender
       }
     }, fee, memo, funds);
   };

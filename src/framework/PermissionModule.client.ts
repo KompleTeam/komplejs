@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Binary, QueryMsg, Modules, MigrateMsg, ResponseWrapperForArrayOfString, ResponseWrapperForString } from "./PermissionModule.types";
+import { Binary, InstantiateMsg, ExecuteMsg, QueryMsg, MigrateMsg, ResponseWrapperForArrayOfString, ResponseWrapperForString } from "./PermissionModule.types";
 export interface PermissionModuleReadOnlyInterface {
   contractAddress: string;
   permissionAddress: ({
@@ -14,7 +14,11 @@ export interface PermissionModuleReadOnlyInterface {
   }: {
     permission: string;
   }) => Promise<ResponseWrapperForString>;
-  modulePermissions: () => Promise<ResponseWrapperForArrayOfString>;
+  modulePermissions: ({
+    module
+  }: {
+    module: string;
+  }) => Promise<ResponseWrapperForArrayOfString>;
   operators: () => Promise<ResponseWrapperForArrayOfString>;
 }
 export class PermissionModuleQueryClient implements PermissionModuleReadOnlyInterface {
@@ -40,9 +44,15 @@ export class PermissionModuleQueryClient implements PermissionModuleReadOnlyInte
       }
     });
   };
-  modulePermissions = async (): Promise<ResponseWrapperForArrayOfString> => {
+  modulePermissions = async ({
+    module
+  }: {
+    module: string;
+  }): Promise<ResponseWrapperForArrayOfString> => {
     return this.client.queryContractSmart(this.contractAddress, {
-      module_permissions: {}
+      module_permissions: {
+        module
+      }
     });
   };
   operators = async (): Promise<ResponseWrapperForArrayOfString> => {
@@ -60,7 +70,7 @@ export interface PermissionModuleInterface extends PermissionModuleReadOnlyInter
     permission
   }: {
     codeId: number;
-    msg: Binary;
+    msg?: Binary;
     permission: string;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   updateModulePermissions: ({
@@ -82,6 +92,7 @@ export interface PermissionModuleInterface extends PermissionModuleReadOnlyInter
     module: string;
     msg: Binary;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  lockExecute: (fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class PermissionModuleClient extends PermissionModuleQueryClient implements PermissionModuleInterface {
   client: SigningCosmWasmClient;
@@ -97,6 +108,7 @@ export class PermissionModuleClient extends PermissionModuleQueryClient implemen
     this.updateModulePermissions = this.updateModulePermissions.bind(this);
     this.updateOperators = this.updateOperators.bind(this);
     this.check = this.check.bind(this);
+    this.lockExecute = this.lockExecute.bind(this);
   }
 
   registerPermission = async ({
@@ -105,7 +117,7 @@ export class PermissionModuleClient extends PermissionModuleQueryClient implemen
     permission
   }: {
     codeId: number;
-    msg: Binary;
+    msg?: Binary;
     permission: string;
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
@@ -153,6 +165,11 @@ export class PermissionModuleClient extends PermissionModuleQueryClient implemen
         module,
         msg
       }
+    }, fee, memo, funds);
+  };
+  lockExecute = async (fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      lock_execute: {}
     }, fee, memo, funds);
   };
 }

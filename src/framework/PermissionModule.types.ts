@@ -4,13 +4,15 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
   admin: string;
+  data?: Binary | null;
 }
 export type ExecuteMsg = {
   register_permission: {
     code_id: number;
-    msg: Binary;
+    msg?: Binary | null;
     permission: string;
   };
 } | {
@@ -27,18 +29,20 @@ export type ExecuteMsg = {
     module: string;
     msg: Binary;
   };
+} | {
+  lock_execute: {};
 };
-export type Binary = string;
 export type QueryMsg = {
   permission_address: {
     permission: string;
   };
 } | {
-  module_permissions: Modules;
+  module_permissions: {
+    module: string;
+  };
 } | {
   operators: {};
 };
-export type Modules = "hub" | "mint" | "permission" | "swap" | "merge" | "marketplace" | "fee";
 export interface MigrateMsg {}
 export interface ResponseWrapperForArrayOfString {
   data: string[];

@@ -4,22 +4,16 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
-  admin?: string | null;
-  hub_info: HubInfo;
-  marbu_fee_module?: string | null;
-}
-export interface HubInfo {
-  description: string;
-  external_link?: string | null;
-  image: string;
-  name: string;
+  admin: string;
+  data?: Binary | null;
 }
 export type ExecuteMsg = {
   register_module: {
     code_id: number;
     module: string;
-    msg: Binary;
+    msg?: Binary | null;
   };
 } | {
   update_hub_info: {
@@ -29,12 +23,6 @@ export type ExecuteMsg = {
     name: string;
   };
 } | {
-  update_website_config: {
-    background_color?: string | null;
-    background_image?: string | null;
-    banner_image?: string | null;
-  };
-} | {
   deregister_module: {
     module: string;
   };
@@ -42,8 +30,13 @@ export type ExecuteMsg = {
   update_operators: {
     addrs: string[];
   };
+} | {
+  migrate_contracts: {
+    code_id: number;
+    contract_address: string;
+    msg: Binary;
+  };
 };
-export type Binary = string;
 export type QueryMsg = {
   config: {};
 } | {
@@ -61,12 +54,12 @@ export interface ResponseWrapperForConfigResponse {
 export interface ConfigResponse {
   admin: string;
   hub_info: HubInfo;
-  website_config?: WebsiteConfig | null;
 }
-export interface WebsiteConfig {
-  background_color?: string | null;
-  background_image?: string | null;
-  banner_image?: string | null;
+export interface HubInfo {
+  description: string;
+  external_link?: string | null;
+  image: string;
+  name: string;
 }
 export interface ResponseWrapperForString {
   data: string;

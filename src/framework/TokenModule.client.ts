@@ -137,15 +137,10 @@ export interface TokenModuleInterface extends TokenModuleReadOnlyInterface {
     locks: Locks;
     tokenId: string;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  updatePerAddressLimit: ({
-    perAddressLimit
+  updateCollectionConfig: ({
+    collectionConfig
   }: {
-    perAddressLimit?: number;
-  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  updateStartTime: ({
-    startTime
-  }: {
-    startTime?: Timestamp;
+    collectionConfig: CollectionConfig;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   initWhitelistContract: ({
     codeId,
@@ -173,8 +168,7 @@ export class TokenModuleClient extends TokenModuleQueryClient implements TokenMo
     this.adminTransferNft = this.adminTransferNft.bind(this);
     this.updateLocks = this.updateLocks.bind(this);
     this.updateTokenLocks = this.updateTokenLocks.bind(this);
-    this.updatePerAddressLimit = this.updatePerAddressLimit.bind(this);
-    this.updateStartTime = this.updateStartTime.bind(this);
+    this.updateCollectionConfig = this.updateCollectionConfig.bind(this);
     this.initWhitelistContract = this.initWhitelistContract.bind(this);
   }
 
@@ -284,25 +278,14 @@ export class TokenModuleClient extends TokenModuleQueryClient implements TokenMo
       }
     }, fee, memo, funds);
   };
-  updatePerAddressLimit = async ({
-    perAddressLimit
+  updateCollectionConfig = async ({
+    collectionConfig
   }: {
-    perAddressLimit?: number;
+    collectionConfig: CollectionConfig;
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
-      update_per_address_limit: {
-        per_address_limit: perAddressLimit
-      }
-    }, fee, memo, funds);
-  };
-  updateStartTime = async ({
-    startTime
-  }: {
-    startTime?: Timestamp;
-  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      update_start_time: {
-        start_time: startTime
+      update_collection_config: {
+        collection_config: collectionConfig
       }
     }, fee, memo, funds);
   };

@@ -4,11 +4,16 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
   admin: string;
-  native_denom: string;
+  data?: Binary | null;
 }
 export type ExecuteMsg = {
+  update_buy_lock: {
+    lock: boolean;
+  };
+} | {
   list_fixed_token: {
     collection_id: number;
     price: Uint128;
@@ -33,12 +38,28 @@ export type ExecuteMsg = {
     token_id: number;
   };
 } | {
+  permission_buy: {
+    buyer: string;
+    collection_id: number;
+    listing_type: Listing;
+    token_id: number;
+  };
+} | {
   update_operators: {
     addrs: string[];
   };
+} | {
+  lock_execute: {};
+} | {
+  receive: Cw20ReceiveMsg;
 };
 export type Uint128 = string;
 export type Listing = "fixed" | "auction";
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
 export type QueryMsg = {
   config: {};
 } | {
@@ -63,7 +84,7 @@ export interface ResponseWrapperForConfig {
 }
 export interface Config {
   admin: Addr;
-  native_denom: string;
+  buy_lock: boolean;
 }
 export interface ResponseWrapperForFixedListing {
   data: FixedListing;

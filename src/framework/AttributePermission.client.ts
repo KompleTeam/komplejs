@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Binary, QueryMsg, Addr, ResponseWrapperForConfig, Config } from "./AttributePermission.types";
+import { Binary, InstantiateMsg, ExecuteMsg, QueryMsg, Addr, ResponseWrapperForConfig, Config } from "./AttributePermission.types";
 export interface AttributePermissionReadOnlyInterface {
   contractAddress: string;
   config: () => Promise<ResponseWrapperForConfig>;

@@ -4,15 +4,16 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
   admin: string;
+  data?: Binary | null;
 }
 export type ExecuteMsg = {
   check: {
     data: Binary;
   };
 };
-export type Binary = string;
 export type QueryMsg = {
   config: {};
 };

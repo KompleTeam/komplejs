@@ -4,8 +4,8 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
-  admin: string;
   metadata_type: Metadata;
 }
 export type ExecuteMsg = {
@@ -13,6 +13,7 @@ export type ExecuteMsg = {
     code_id: number;
     collection_config: CollectionConfig;
     collection_info: CollectionInfo;
+    fund_info: CollectionFundInfo;
     linked_collections?: number[] | null;
     metadata_info: MetadataInfo;
     token_info: TokenInfo;
@@ -22,7 +23,8 @@ export type ExecuteMsg = {
     public_collection_creation: boolean;
   };
 } | {
-  update_mint_lock: {
+  update_collection_mint_lock: {
+    collection_id: number;
     lock: boolean;
   };
 } | {
@@ -51,19 +53,24 @@ export type ExecuteMsg = {
     linked_collections: number[];
   };
 } | {
-  whitelist_collection: {
+  update_collection_status: {
     collection_id: number;
+    is_blacklist: boolean;
   };
 } | {
-  blacklist_collection: {
-    collection_id: number;
+  lock_execute: {};
+} | {
+  update_creators: {
+    addrs: string[];
   };
+} | {
+  receive: Cw20ReceiveMsg;
 };
 export type Timestamp = Uint64;
 export type Uint64 = string;
-export type Collections = "standard" | "linked" | "komple";
+export type Collections = "standard" | "komple";
 export type Metadata = "standard" | "shared" | "dynamic";
-export type Binary = string;
+export type Uint128 = string;
 export interface CollectionConfig {
   ipfs_link?: string | null;
   max_token_limit?: number | null;
@@ -76,7 +83,11 @@ export interface CollectionInfo {
   external_link?: string | null;
   image: string;
   name: string;
-  native_denom: string;
+}
+export interface CollectionFundInfo {
+  cw20_address?: string | null;
+  denom: string;
+  is_native: boolean;
 }
 export interface MetadataInfo {
   code_id: number;
@@ -91,10 +102,17 @@ export interface MintMsg {
   metadata_id?: number | null;
   recipient: string;
 }
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
 export type QueryMsg = {
   config: {};
 } | {
-  collection_address: number;
+  collection_address: {
+    collection_id: number;
+  };
 } | {
   collection_info: {
     collection_id: number;
@@ -110,6 +128,12 @@ export type QueryMsg = {
     blacklist: boolean;
     limit?: number | null;
     start_after?: number | null;
+  };
+} | {
+  creators: {};
+} | {
+  mint_lock: {
+    collection_id: number;
   };
 };
 export interface MigrateMsg {}
@@ -139,11 +163,15 @@ export interface Config {
   mint_lock: boolean;
   public_collection_creation: boolean;
 }
+export interface ResponseWrapperForArrayOfString {
+  data: string[];
+  query: string;
+}
 export interface ResponseWrapperForArrayOfUint32 {
   data: number[];
   query: string;
 }
-export interface ResponseWrapperForArrayOfString {
-  data: string[];
+export interface ResponseWrapperForBoolean {
+  data: boolean;
   query: string;
 }

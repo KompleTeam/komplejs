@@ -4,8 +4,10 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Binary = string;
 export interface InstantiateMsg {
   admin: string;
+  data?: Binary | null;
 }
 export type ExecuteMsg = {
   update_merge_lock: {
@@ -24,8 +26,9 @@ export type ExecuteMsg = {
   update_operators: {
     addrs: string[];
   };
+} | {
+  lock_execute: {};
 };
-export type Binary = string;
 export interface MergeMsg {
   burn_ids: MergeBurnMsg[];
   metadata_id?: number | null;

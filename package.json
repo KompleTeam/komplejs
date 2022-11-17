@@ -6,10 +6,10 @@
   "repository": "https://github.com/KompleTeam/komplejs",
   "author": "findolor <16416963+findolor@users.noreply.github.com>",
   "private": true,
-
   "types": "./lib/cjs/types/index.d.ts",
-  "files": ["lib/**/*"],
-
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "clean": "rm -rf ./lib",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
@@ -17,8 +17,6 @@
     "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
     "prepack": "npm run build"
   },
-
-
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "^0.29.3",
     "@cosmjs/proto-signing": "^0.29.3",

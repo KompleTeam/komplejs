@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, HubInfo, ExecuteMsg, Binary, QueryMsg, MigrateMsg, ResponseWrapperForConfigResponse, ConfigResponse, WebsiteConfig, ResponseWrapperForString, ResponseWrapperForArrayOfString } from "./HubModule.types";
+import { Binary, InstantiateMsg, ExecuteMsg, QueryMsg, MigrateMsg, ResponseWrapperForConfigResponse, ConfigResponse, HubInfo, ResponseWrapperForString, ResponseWrapperForArrayOfString } from "./HubModule.types";
 export interface HubModuleReadOnlyInterface {
   contractAddress: string;
   config: () => Promise<ResponseWrapperForConfigResponse>;
@@ -61,7 +61,7 @@ export interface HubModuleInterface extends HubModuleReadOnlyInterface {
   }: {
     codeId: number;
     module: string;
-    msg: Binary;
+    msg?: Binary;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   updateHubInfo: ({
     description,
@@ -74,15 +74,6 @@ export interface HubModuleInterface extends HubModuleReadOnlyInterface {
     image: string;
     name: string;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
-  updateWebsiteConfig: ({
-    backgroundColor,
-    backgroundImage,
-    bannerImage
-  }: {
-    backgroundColor?: string;
-    backgroundImage?: string;
-    bannerImage?: string;
-  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
   deregisterModule: ({
     module
   }: {
@@ -92,6 +83,15 @@ export interface HubModuleInterface extends HubModuleReadOnlyInterface {
     addrs
   }: {
     addrs: string[];
+  }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
+  migrateContracts: ({
+    codeId,
+    contractAddress,
+    msg
+  }: {
+    codeId: number;
+    contractAddress: string;
+    msg: Binary;
   }, fee?: number | StdFee | "auto", memo?: string, funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class HubModuleClient extends HubModuleQueryClient implements HubModuleInterface {
@@ -106,9 +106,9 @@ export class HubModuleClient extends HubModuleQueryClient implements HubModuleIn
     this.contractAddress = contractAddress;
     this.registerModule = this.registerModule.bind(this);
     this.updateHubInfo = this.updateHubInfo.bind(this);
-    this.updateWebsiteConfig = this.updateWebsiteConfig.bind(this);
     this.deregisterModule = this.deregisterModule.bind(this);
     this.updateOperators = this.updateOperators.bind(this);
+    this.migrateContracts = this.migrateContracts.bind(this);
   }
 
   registerModule = async ({
@@ -118,7 +118,7 @@ export class HubModuleClient extends HubModuleQueryClient implements HubModuleIn
   }: {
     codeId: number;
     module: string;
-    msg: Binary;
+    msg?: Binary;
   }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       register_module: {
@@ -148,23 +148,6 @@ export class HubModuleClient extends HubModuleQueryClient implements HubModuleIn
       }
     }, fee, memo, funds);
   };
-  updateWebsiteConfig = async ({
-    backgroundColor,
-    backgroundImage,
-    bannerImage
-  }: {
-    backgroundColor?: string;
-    backgroundImage?: string;
-    bannerImage?: string;
-  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      update_website_config: {
-        background_color: backgroundColor,
-        background_image: backgroundImage,
-        banner_image: bannerImage
-      }
-    }, fee, memo, funds);
-  };
   deregisterModule = async ({
     module
   }: {
@@ -184,6 +167,23 @@ export class HubModuleClient extends HubModuleQueryClient implements HubModuleIn
     return await this.client.execute(this.sender, this.contractAddress, {
       update_operators: {
         addrs
+      }
+    }, fee, memo, funds);
+  };
+  migrateContracts = async ({
+    codeId,
+    contractAddress,
+    msg
+  }: {
+    codeId: number;
+    contractAddress: string;
+    msg: Binary;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      migrate_contracts: {
+        code_id: codeId,
+        contract_address: contractAddress,
+        msg
       }
     }, fee, memo, funds);
   };

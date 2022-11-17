@@ -6,7 +6,7 @@
 
 export type Timestamp = Uint64;
 export type Uint64 = string;
-export type Collections = "standard" | "linked" | "komple";
+export type Collections = "standard" | "komple";
 export type Metadata = "standard" | "shared" | "dynamic";
 export interface InstantiateMsg {
   config: WhitelistConfig;
@@ -23,7 +23,6 @@ export interface MetadataInfo {
   instantiate_msg: InstantiateMsg1;
 }
 export interface InstantiateMsg1 {
-  admin: string;
   metadata_type: Metadata;
 }
 export interface TokenInfo {
@@ -69,12 +68,8 @@ export type ExecuteMsg = {
     token_id: string;
   };
 } | {
-  update_per_address_limit: {
-    per_address_limit?: number | null;
-  };
-} | {
-  update_start_time: {
-    start_time?: Timestamp | null;
+  update_collection_config: {
+    collection_config: CollectionConfig;
   };
 } | {
   init_whitelist_contract: {

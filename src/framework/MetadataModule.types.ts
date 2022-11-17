@@ -9,7 +9,6 @@ export interface Metadata {
   meta_info: MetaInfo;
 }
 export interface InstantiateMsg {
-  admin: string;
   metadata_type: Metadata;
 }
 export type ExecuteMsg = {
