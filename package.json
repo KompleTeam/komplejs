@@ -6,7 +6,6 @@
   "main": "./lib/cjs/index.js",
   "repository": "https://github.com/KompleTeam/komplejs",
   "author": "findolor <findolor@komple.io>",
-  "private": true,
   "types": "./lib/cjs/types/index.d.ts",
   "files": [
     "lib/**/*"
