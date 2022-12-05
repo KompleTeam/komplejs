@@ -2,6 +2,7 @@
   "name": "komplejs",
   "version": "1.0.1-beta",
   "description": "Javascript library made for Komple Framework.",
+  "license": "Apache-2.0",
   "main": "./lib/cjs/index.js",
   "repository": "https://github.com/KompleTeam/komplejs",
   "author": "findolor <findolor@komple.io>",
