@@ -1,16 +1,16 @@
-import { contracts } from "./ts-files";
+import { contracts } from "./ts-types";
 import { SigningCosmWasmClient, toBinary } from "@cosmjs/cosmwasm-stargate";
 import { OfflineSigner } from "@cosmjs/proto-signing";
-import { HubInfo } from "./ts-files/HubModule.types";
-import { CollectionFundInfo } from "./ts-files/MintModule.types";
+import { HubInfo } from "./ts-types/HubModule.types";
+import { CollectionFundInfo } from "./ts-types/MintModule.types";
 import {
   CollectionConfig,
   Collections,
   Metadata,
   MetadataInfo,
   TokenInfo,
-} from "./ts-files/TokenModule.types";
-import { WhitelistConfig } from "./ts-files/WhitelistModule.types";
+} from "./ts-types/TokenModule.types";
+import { WhitelistConfig } from "./ts-types/WhitelistModule.types";
 
 interface KompleClientInterface {
   client: SigningCosmWasmClient;

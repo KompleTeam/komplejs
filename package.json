@@ -1,10 +1,10 @@
 {
   "name": "komplejs",
-  "version": "0.1.0",
+  "version": "1.0.1-beta",
   "description": "Javascript library made for Komple Framework.",
   "main": "./lib/cjs/index.js",
   "repository": "https://github.com/KompleTeam/komplejs",
-  "author": "findolor <16416963+findolor@users.noreply.github.com>",
+  "author": "findolor <findolor@komple.io>",
   "private": true,
   "types": "./lib/cjs/types/index.d.ts",
   "files": [
