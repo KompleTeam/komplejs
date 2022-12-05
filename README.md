@@ -1,4 +1,4 @@
-# KompleJs
+# KompleJS
 
 KompleJS is a javascript library that makes it easier to create and work with [Komple Framework](https://github.com/KompleTeam/komple-framework) applications.
 
