@@ -1,60 +1,465 @@
-import { SigningCosmWasmClient, OfflineSigner } from 'cosmwasm'
-import { ControllerContract, TokenContract, WhitelistContract, MetadataContract } from './contracts'
-import { MintModule, MergeModule, MarketplaceModule, PermissionModule } from './modules'
+import { contracts } from "./ts-types";
+import { SigningCosmWasmClient, toBinary } from "@cosmjs/cosmwasm-stargate";
+import { OfflineSigner } from "@cosmjs/proto-signing";
+import { HubInfo } from "./ts-types/HubModule.types";
+import { CollectionFundInfo } from "./ts-types/MintModule.types";
+import {
+  CollectionConfig,
+  Collections,
+  Metadata,
+  MetadataInfo,
+  TokenInfo,
+} from "./ts-types/TokenModule.types";
+import { WhitelistConfig } from "./ts-types/WhitelistModule.types";
 
 interface KompleClientInterface {
-  client: SigningCosmWasmClient
-  signer: OfflineSigner
-
-  getControllerContract: (contractAddress?: string) => ControllerContract
-  getTokenContract: (contractAddress?: string) => TokenContract
-  getWhitelistContract: (contractAddress?: string) => WhitelistContract
-  getMetadataContract: (contractAddress?: string) => MetadataContract
-
-  getMintModule: (contractAddress?: string) => MintModule
-  getMergeModule: (contractAddress?: string) => MergeModule
-  getMarketplaceModule: (contractAddress?: string) => MarketplaceModule
-  getPermissionModule: (contractAddress?: string) => PermissionModule
+  client: SigningCosmWasmClient;
+  signer: OfflineSigner;
 }
 
 export class KompleClient implements KompleClientInterface {
-  client: SigningCosmWasmClient
-  signer: OfflineSigner
+  client: SigningCosmWasmClient;
+  signer: OfflineSigner;
 
   constructor(client: SigningCosmWasmClient, signer: OfflineSigner) {
-    this.client = client
-    this.signer = signer
+    this.client = client;
+    this.signer = signer;
   }
 
-  getControllerContract(contractAddress?: string) {
-    return new ControllerContract(this.client, this.signer, contractAddress)
+  async getAccount() {
+    return (await this.signer.getAccounts())[0];
   }
 
-  getTokenContract(contractAddress?: string) {
-    return new TokenContract(this.client, this.signer, contractAddress)
+  async feeModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(account.address, codeId, msg, "Komple Fee Module", "auto", {
+          admin: setContractAdmin ? account.address : undefined,
+        });
+      },
+      client: new contracts.FeeModule.FeeModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.FeeModule.FeeModuleQueryClient(this.client, contractAddress),
+    };
   }
 
-  getWhitelistContract(contractAddress?: string) {
-    return new WhitelistContract(this.client, this.signer, contractAddress)
+  async hubModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        hubInfo,
+        marbuFeeModule,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        hubInfo: HubInfo;
+        marbuFeeModule?: string;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = {
+          admin,
+          data: toBinary({ hub_info: hubInfo, marbu_fee_module: marbuFeeModule }),
+        };
+        return this.client.instantiate(account.address, codeId, msg, "Komple Hub Module", "auto", {
+          admin: setContractAdmin ? account.address : undefined,
+        });
+      },
+      client: new contracts.HubModule.HubModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.HubModule.HubModuleQueryClient(this.client, contractAddress),
+    };
   }
 
-  getMetadataContract(contractAddress?: string) {
-    return new MetadataContract(this.client, this.signer, contractAddress)
+  async marketplaceModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        fundInfo,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        fundInfo: CollectionFundInfo;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin, data: toBinary({ fund_info: fundInfo }) };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Marketplace Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.MarketplaceModule.MarketplaceModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.MarketplaceModule.MarketplaceModuleQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
   }
 
-  getMintModule(contractAddress?: string) {
-    return new MintModule(this.client, this.signer, contractAddress)
+  async mergeModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Merge Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.MergeModule.MergeModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.MergeModule.MergeModuleQueryClient(this.client, contractAddress),
+    };
   }
 
-  getMergeModule(contractAddress?: string) {
-    return new MergeModule(this.client, this.signer, contractAddress)
+  async metadataModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        metadataType,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        metadataType: Metadata;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin, data: toBinary({ metadata_type: metadataType }) };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Metadata Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.MetadataModule.MetadataModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.MetadataModule.MetadataModuleQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
   }
 
-  getMarketplaceModule(contractAddress?: string) {
-    return new MarketplaceModule(this.client, this.signer, contractAddress)
+  async mintModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(account.address, codeId, msg, "Komple Mint Module", "auto", {
+          admin: setContractAdmin ? account.address : undefined,
+        });
+      },
+      client: new contracts.MintModule.MintModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.MintModule.MintModuleQueryClient(this.client, contractAddress),
+    };
   }
 
-  getPermissionModule(contractAddress?: string) {
-    return new PermissionModule(this.client, this.signer, contractAddress)
+  async permissionModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Permission Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.PermissionModule.PermissionModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.PermissionModule.PermissionModuleQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
+  }
+
+  async tokenModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        creator,
+        tokenInfo,
+        collectionName,
+        collectionType,
+        collectionConfig,
+        metadataInfo,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        creator: string;
+        tokenInfo: TokenInfo;
+        collectionName: string;
+        collectionType: Collections;
+        collectionConfig: CollectionConfig;
+        metadataInfo: MetadataInfo;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = {
+          admin,
+          data: toBinary({
+            creator,
+            token_info: tokenInfo,
+            collection_name: collectionName,
+            collection_type: collectionType,
+            collection_config: collectionConfig,
+            metadata_info: metadataInfo,
+          }),
+        };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Token Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.TokenModule.TokenModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.TokenModule.TokenModuleQueryClient(this.client, contractAddress),
+    };
+  }
+
+  async whitelistModule(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        members,
+        config,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        members: string[];
+        config: WhitelistConfig;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin, data: toBinary({ members, config }) };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Whitelist Module",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.WhitelistModule.WhitelistModuleClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.WhitelistModule.WhitelistModuleQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
+  }
+
+  async attributePermission(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Attribute Permission",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.AttributePermission.AttributePermissionClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.AttributePermission.AttributePermissionQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
+  }
+
+  async linkPermission(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Link Permission",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.LinkPermission.LinkPermissionClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.LinkPermission.LinkPermissionQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
+  }
+
+  async ownershipPermission(contractAddress: string) {
+    let account = await this.getAccount();
+    return {
+      instantiate: async ({
+        codeId,
+        admin = account.address,
+        setContractAdmin = false,
+      }: {
+        codeId: number;
+        admin?: string;
+        setContractAdmin?: boolean;
+      }) => {
+        const msg = { admin };
+        return this.client.instantiate(
+          account.address,
+          codeId,
+          msg,
+          "Komple Ownership Permission",
+          "auto",
+          {
+            admin: setContractAdmin ? account.address : undefined,
+          }
+        );
+      },
+      client: new contracts.OwnershipPermission.OwnershipPermissionClient(
+        this.client,
+        account.address,
+        contractAddress
+      ),
+      queryClient: new contracts.OwnershipPermission.OwnershipPermissionQueryClient(
+        this.client,
+        contractAddress
+      ),
+    };
   }
 }
