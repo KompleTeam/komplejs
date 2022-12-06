@@ -11,6 +11,7 @@ import {
   TokenInfo,
 } from "./ts-types/TokenModule.types";
 import { WhitelistConfig } from "./ts-types/WhitelistModule.types";
+import { TokenModuleClient, TokenModuleQueryClient } from './custom-ts-types/TokenModule.client'
 
 interface KompleClientInterface {
   client: SigningCosmWasmClient;
@@ -306,12 +307,12 @@ export class KompleClient implements KompleClientInterface {
           }
         );
       },
-      client: new contracts.TokenModule.TokenModuleClient(
+      client: new TokenModuleClient(
         this.client,
         account.address,
         contractAddress
       ),
-      queryClient: new contracts.TokenModule.TokenModuleQueryClient(this.client, contractAddress),
+      queryClient: new TokenModuleQueryClient(this.client, contractAddress),
     };
   }
 
