@@ -1,6 +1,6 @@
 {
   "name": "komplejs",
-  "version": "1.0.1-beta",
+  "version": "1.0.2-beta",
   "description": "Javascript library made for Komple Framework.",
   "license": "Apache-2.0",
   "main": "./lib/cjs/index.js",
