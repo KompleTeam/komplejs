@@ -539,7 +539,7 @@ export class TokenModuleClient extends TokenModuleQueryClient implements TokenMo
       this.sender,
       this.contractAddress,
       {
-        approveAll: {
+        approve_all: {
           operator,
           expires,
         },
@@ -563,7 +563,7 @@ export class TokenModuleClient extends TokenModuleQueryClient implements TokenMo
       this.sender,
       this.contractAddress,
       {
-        revokeAll: {
+        revoke_all: {
           operator,
         },
       },
