@@ -67,7 +67,7 @@ export interface CustomTokenModuleReadOnlyInterface extends TokenModuleReadOnlyI
   numTokens: () => Promise<any>;
   contractInfo: () => Promise<any>;
   nftInfo: ({ tokenId }: { tokenId: string }) => Promise<any>;
-  allNtfInfo: ({
+  allNftInfo: ({
     tokenId,
     includeExpired,
   }: {
@@ -101,7 +101,7 @@ export class TokenModuleQueryClient implements CustomTokenModuleReadOnlyInterfac
     this.numTokens = this.numTokens.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
     this.nftInfo = this.nftInfo.bind(this);
-    this.allNtfInfo = this.allNtfInfo.bind(this);
+    this.allNftInfo = this.allNftInfo.bind(this);
     this.tokens = this.tokens.bind(this);
     this.allTokens = this.allTokens.bind(this);
     this.minter = this.minter.bind(this);
@@ -179,7 +179,7 @@ export class TokenModuleQueryClient implements CustomTokenModuleReadOnlyInterfac
       nft_info: { token_id: tokenId },
     });
   };
-  allNtfInfo = async ({
+  allNftInfo = async ({
     tokenId,
     includeExpired,
   }: {
@@ -187,7 +187,7 @@ export class TokenModuleQueryClient implements CustomTokenModuleReadOnlyInterfac
     includeExpired?: boolean | undefined;
   }): Promise<any> => {
     return this.client.queryContractSmart(this.contractAddress, {
-      all_ntf_info: { token_id: tokenId, include_expired: includeExpired },
+      all_nft_info: { token_id: tokenId, include_expired: includeExpired },
     });
   };
   tokens = async ({
